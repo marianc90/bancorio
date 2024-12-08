@@ -5,42 +5,90 @@ import java.awt.*;
 
 public class CamposCuentaPanel extends CamposPanel {
 
-    private JTextField cuitTxt;
-    private JTextField cbuTxt;
+    private JComboBox<String> tipoComboBox;
+    private JTextField titularIDTxt;
+    private JTextField saldoTxt;
+    private JTextField numeroTxt;
+    private boolean esEdicion = false;
 
     public CamposCuentaPanel(PanelManager panelManager) {
         super(panelManager);
     }
 
     public void armarFormulario() {
-        this.setLayout(new GridLayout(2,2));
+        this.setLayout(new GridLayout(2,2,5,5));
 
-        JLabel cuitLbl = new JLabel("CUIT:");
-        JLabel cbuLbl = new JLabel("CBU:");
+        JLabel tipoLbl = new JLabel("Tipo:");
+        JLabel titularIDLbl = new JLabel("ID Titular:");
+        JLabel saldoLbl = new JLabel("Saldo:");
+        JLabel numeroLbl = new JLabel("Numero:");
 
-        cuitTxt = new JTextField("");
-        cbuTxt = new JTextField("");
+        String[] tipos = {"Caja de Ahorro", "Cuenta Corriente"};
+        tipoComboBox = new JComboBox<>(tipos);
+        titularIDTxt = new JTextField("");
+        saldoTxt = new JTextField("");
+        numeroTxt = new JTextField("");
 
-        this.add(cuitLbl);
-        this.add(cuitTxt);
-        this.add(cbuLbl);
-        this.add(cbuTxt);
+        this.add(tipoLbl);
+        this.add(tipoComboBox);
+        this.add(titularIDLbl);
+        this.add(titularIDTxt);
+        this.add(saldoLbl);
+        this.add(saldoTxt);
+        this.add(numeroLbl);
+        this.add(numeroTxt);
 
     }
 
-    public JTextField getCuitTxt() {
-        return cuitTxt;
+    public String getTipoSeleccionado() {
+        String tipoSeleccionado = (String) tipoComboBox.getSelectedItem();
+        if (tipoSeleccionado.equals("Caja de Ahorro")) {
+            return "CA";
+        } else if (tipoSeleccionado.equals("Cuenta Corriente")) {
+            return "CC";
+        }
+        return null;
     }
 
-    public void setCuitTxt(JTextField cuitTxt) {
-        this.cuitTxt = cuitTxt;
+    public JComboBox<String> getTipoComboBox() {
+        return tipoComboBox;
     }
 
-    public JTextField getCbuTxt() {
-        return cbuTxt;
+    public void setTipoComboBox(JComboBox<String> tipoComboBox) {
+        this.tipoComboBox = tipoComboBox;
     }
 
-    public void setCbuTxt(JTextField cbuTxt) {
-        this.cbuTxt = cbuTxt;
+    public JTextField getTitularIDTxt() {
+
+        return titularIDTxt;
+    }
+
+    public void setTitularIDTxt(JTextField titularIDTxt) {
+
+        this.titularIDTxt = titularIDTxt;
+    }
+
+    public JTextField getSaldoTxt() {
+        return saldoTxt;
+    }
+
+    public void setSaldoTxt(JTextField saldoTxt) {
+        this.saldoTxt = saldoTxt;
+    }
+
+    public JTextField getNumeroTxt() {
+        return numeroTxt;
+    }
+
+    public void setNumeroTxt(JTextField numeroTxt) {
+        this.numeroTxt = numeroTxt;
+    }
+
+    public void setModoEdicion(boolean edicion) {
+        this.esEdicion = edicion;
+    }
+
+    public boolean isModoEdicion() {
+        return esEdicion;
     }
 }

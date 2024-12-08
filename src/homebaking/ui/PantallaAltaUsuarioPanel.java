@@ -83,4 +83,3 @@ public class PantallaAltaUsuarioPanel extends AbstractPantallaAltaPanel{
     }
 
 }
-

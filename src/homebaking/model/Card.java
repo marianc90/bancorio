@@ -9,16 +9,16 @@ public class Card {
     private double availableBalance;
     private double balance;
     private User owner;
-    private List<Transaction> transactions;
+    private List<Movimiento> movimientos;
 
-    public Card(Long id, String number, String type, double availableBalance, double balance, User owner, List<Transaction> transactions) {
+    public Card(Long id, String number, String type, double availableBalance, double balance, User owner, List<Movimiento> movimientos) {
         this.id = id;
         this.number = number;
         this.type = type;
         this.availableBalance = availableBalance;
         this.balance = balance;
         this.owner = owner;
-        this.transactions = transactions;
+        this.movimientos = movimientos;
     }
 
     public Long getId() {
@@ -65,11 +65,11 @@ public class Card {
         this.owner = owner;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<Movimiento> getMovimientos() {
+        return movimientos;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setMovimiento(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
     }
 }

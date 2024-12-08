@@ -1,5 +1,7 @@
 package homebaking.ui;
 
+import homebaking.exceptions.ServiceException;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,11 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
         this.botonesPanel.getOkBtn().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ejecutarAccionOk();
+                try {
+                    ejecutarAccionOk();
+                } catch (ServiceException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -46,7 +52,7 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
 
     public abstract void setCamposPanel();
 
-    public abstract void ejecutarAccionOk();
+    public abstract void ejecutarAccionOk() throws ServiceException;
 
     public abstract void ejecutarAccionCancel();
 

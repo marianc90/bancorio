@@ -11,10 +11,7 @@ import java.awt.event.ActionListener;
 public class PantallaInicioPanel extends JPanel {
 
     protected PanelManager panelManager;
-    private JButton tarjetasBtn;
-    private JButton adminUsuarioBtn;
-    private JButton cuentaBtn;
-    private JButton transacBtn;
+    private JButton loginBtn;
 
     public PantallaInicioPanel(PanelManager panelManager) {
         this.panelManager = panelManager;
@@ -31,63 +28,18 @@ public class PantallaInicioPanel extends JPanel {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel imageLabel = new JLabel(scaledIcon);
 
-        this.adminUsuarioBtn = new JButton("Administración de Usuarios");
-        this.tarjetasBtn = new JButton("Gestión de Tarjetas");
-        this.cuentaBtn = new JButton("Control de Cuentas");
-        this.transacBtn = new JButton("Transacciones");
+        this.loginBtn = new JButton("Iniciar Sesión");
 
+        this.add(Box.createRigidArea(new Dimension(500, 10)));
+        this.add(Box.createRigidArea(new Dimension(340, 0)));
+        this.add(loginBtn);
         this.add(imageLabel);
-        this.add(adminUsuarioBtn);
-        this.add(tarjetasBtn);
-        this.add(cuentaBtn);
-        this.add(transacBtn);
 
-        //escuchar evento del ok, mandar a grabar
-        this.tarjetasBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-        });
-
-        this.adminUsuarioBtn.addActionListener(new ActionListener() {
+        this.loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                panelManager.mostrarPantallaAdminUsuarioPanel();
-            }
-        });
-
-        this.cuentaBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //panelManager.mostrarPantallaAltaCuentaPanel();
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Esta opción estará disponible próximamente.",
-                    "Funcionalidad en desarrollo",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-        });
-
-        this.transacBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //panelManager.mostrarPantallaAltaCuentaPanel();
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                panelManager.mostrarLoginPanel();
             }
         });
 

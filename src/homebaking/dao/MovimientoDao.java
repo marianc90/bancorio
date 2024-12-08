@@ -1,4 +1,4 @@
 package main.java.homebaking.dao;
 
-public class TransactionDao {
+public class MovimientoDao {
 }

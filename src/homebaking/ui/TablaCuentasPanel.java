@@ -1,7 +1,9 @@
 package homebaking.ui;
 
 import homebaking.exceptions.ServiceException;
+import homebaking.model.Cuenta;
 import homebaking.model.User;
+import homebaking.service.CuentaService;
 import homebaking.service.UserService;
 
 import javax.swing.*;
@@ -11,10 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class TablaUsuariosPanel extends JPanel implements ActionListener {
+public class TablaCuentasPanel extends JPanel implements ActionListener {
 
-    private JTable tablaUsuarios;
-    private UsuarioTableModel modelo;
+    private JTable tablaCuentas;
+    private CuentaTableModel modelo;
 
     private JScrollPane scrollPaneParaTabla;
     private JButton botonVolver;
@@ -22,9 +24,9 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
     private JButton botonBorrar;
     private JButton botonEditar;
     private PanelManager panelManager;
-    UserService s = new UserService();
+    CuentaService s = new CuentaService();
 
-    public TablaUsuariosPanel(PanelManager panelManager) {
+    public TablaCuentasPanel(PanelManager panelManager) {
         super();
         this.panelManager = panelManager;
         armarPanel();
@@ -33,24 +35,24 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
     private void armarPanel() {
         this.setLayout(new FlowLayout());
 
-        modelo = new UsuarioTableModel();
-        tablaUsuarios = new JTable(modelo);
-        scrollPaneParaTabla = new JScrollPane(tablaUsuarios);
+        modelo = new CuentaTableModel();
+        tablaCuentas = new JTable(modelo);
+        scrollPaneParaTabla = new JScrollPane(tablaCuentas);
         this.add(scrollPaneParaTabla);
 
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener(this);
         this.add(botonVolver);
 
-        botonAgregar = new JButton("Crear Usuario");
+        botonAgregar = new JButton("Crear Cuenta");
         botonAgregar.addActionListener(this);
         this.add(botonAgregar);
 
-        botonEditar = new JButton("Editar Usuario");
+        botonEditar = new JButton("Actualizar Saldo");
         botonEditar.addActionListener(this);
         this.add(botonEditar);
 
-        botonBorrar = new JButton("Borrar");
+        botonBorrar = new JButton("Eliminar");
         botonBorrar.addActionListener(this);
         this.add(botonBorrar);
 
@@ -58,32 +60,33 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonEditar) {
-            int filaSeleccionada = this.tablaUsuarios.getSelectedRow();
+            int filaSeleccionada = this.tablaCuentas.getSelectedRow();
 
             if (filaSeleccionada != -1) {
-                User usuarioSeleccionado = this.modelo.getContenido().get(filaSeleccionada);
+                Cuenta cuentaSeleccionada = this.modelo.getContenido().get(filaSeleccionada);
 
-                this.panelManager.mostrarPantallaEDicionUsuarioPanel(usuarioSeleccionado);
+                this.panelManager.mostrarPantallaEdicionCuentaPanel(cuentaSeleccionada);
+
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona un usuario para editar.");
+                JOptionPane.showMessageDialog(this, "Por favor selecciona una cuenta para actualizar su saldo.");
             }
 
         } else if (e.getSource() == botonAgregar) {
-            this.panelManager.mostrarPantallaAltaUsuarioPanel();
+            this.panelManager.mostrarPantallaAltaCuentaPanel();
 
         } else if (e.getSource() == botonBorrar) {
-            int filaSeleccionada = this.tablaUsuarios.getSelectedRow();
+            int filaSeleccionada = this.tablaCuentas.getSelectedRow();
             if (filaSeleccionada != -1) {
-                User usuario = this.modelo.getContenido().get(filaSeleccionada);
+                Cuenta cuenta = this.modelo.getContenido().get(filaSeleccionada);
                 try {
-                    s.borrarUser(usuario);
+                    s.borrarCuenta(cuenta);
                     this.modelo.getContenido().remove(filaSeleccionada);
                     modelo.fireTableDataChanged();
                 } catch (ServiceException ex) {
-                    JOptionPane.showMessageDialog(this, "EL USUARIO "+usuario.getUsername()+" NO PUDO SER BORRADO");
+                    JOptionPane.showMessageDialog(this, "LA CUENTA "+cuenta.getNumero()+" NO PUDO SER BORRADA");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona un usuario para borrar.");
+                JOptionPane.showMessageDialog(this, "Por favor selecciona una cuenta para borrar.");
             }
 
         } else if (e.getSource() == botonVolver){
@@ -94,14 +97,14 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
     public void refrescarTabla() {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         try {
-            List<User> listaTodosLosUsuarios = s.listaTodosLosUsers();
-            modelo.setContenido(listaTodosLosUsuarios);
+            List<Cuenta> listaTodasLasCuentas = s.listaTodasLasCuentas();
+            modelo.setContenido(listaTodasLasCuentas);
             modelo.fireTableDataChanged();
-            tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(15);
+            tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(15);
             leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-            tablaUsuarios.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+            tablaCuentas.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
         } catch (ServiceException ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de usuarios.");
+            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de cuentas.");
         }
     }
 

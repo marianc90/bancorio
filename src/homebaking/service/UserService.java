@@ -47,4 +47,20 @@ public class UserService {
         }
     }
 
+    public User checkUser(String email, String password) throws ServiceException {
+        try {
+            return dao.checkUser(email, password);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public User getUser(Integer id) throws ServiceException {
+        try {
+            return dao.getUser(id);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
 }

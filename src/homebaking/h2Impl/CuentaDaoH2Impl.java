@@ -1,8 +1,9 @@
 package homebaking.h2Impl;
 
-import homebaking.dao.UserDao;
+import homebaking.dao.CuentaDao;
 import homebaking.exceptions.DAOException;
-import homebaking.exceptions.ObjectoDuplicadoException;
+import homebaking.exceptions.ServiceException;
+import homebaking.model.Cuenta;
 import homebaking.model.User;
 import resources.DBManager;
 
@@ -11,22 +12,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserDaoH2Impl implements UserDao {
+public class CuentaDaoH2Impl implements CuentaDao {
 
-    public void crearUser(User unUser) throws DAOException {
-        String username = unUser.getUsername();
-        String email = unUser.getEmail();
-        String password = unUser.getPassword();
+    public void crearCuenta(Cuenta unaCuenta) throws DAOException {
+        Integer numero = unaCuenta.getNumero();
+        String tipo = unaCuenta.getTipo();
+        Integer titular = unaCuenta.getTitular().getId();
+        double saldo = unaCuenta.getSaldo();
 
         Date d = new Date();
 
         Connection c = DBManager.connect();
         try {
 //            Statement s = c.createStatement();
-            PreparedStatement ps = c.prepareStatement("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
-            ps.setString(1, username);
-            ps.setString(2, email);
-            ps.setString(3, password);
+            PreparedStatement ps = c.prepareStatement("INSERT INTO cuentas (numero, tipo, titular, saldo) VALUES (?, ?, ?, ?)");
+            ps.setInt(1, numero);
+            ps.setString(2, tipo);
+            ps.setInt(3, titular);
+            ps.setDouble(4, saldo);
 
 //            String sql = "INSERT INTO usuarios (user, email, pass) VALUES ('" + user + "', '" + email + "', '" + pass + "')";
 //            s.executeUpdate(sql);
@@ -53,8 +56,8 @@ public class UserDaoH2Impl implements UserDao {
         }
     }
 
-    public void borraUser(String username) throws DAOException {
-        String sql = "DELETE FROM usuarios WHERE username = '" + username + "'";
+    public void borrarCuenta(Integer numero) throws DAOException {
+        String sql = "DELETE FROM cuentas WHERE numero = '" + numero + "'";
         Connection c = DBManager.connect();
         try {
             Statement s = c.createStatement();
@@ -78,12 +81,11 @@ public class UserDaoH2Impl implements UserDao {
         }
     }
 
-    public void actualizaUser(User unUser) throws DAOException {
-        String user = unUser.getUsername();
-        String email = unUser.getEmail();
-        String pass = unUser.getPassword();
+    public void actualizaSaldo(Cuenta unaCuenta) throws DAOException {
+        Integer numero = unaCuenta.getNumero();
+        double saldo = unaCuenta.getSaldo();
 
-        String sql = "UPDATE usuarios set email = '" + email + "', password = '" + pass + "' WHERE username = '" + user + "'";
+        String sql = "UPDATE cuentas set saldo = '" + saldo + "' WHERE numero = '" + numero + "'";
         Connection c = DBManager.connect();
         try {
             Statement s = c.createStatement();
@@ -108,9 +110,9 @@ public class UserDaoH2Impl implements UserDao {
         }
     }
 
-    public List<User> listaTodosLosUsers() throws DAOException {
-        List<User> resultado = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios";
+    public List<Cuenta> listaTodasLasCuentas() throws DAOException {
+        List<Cuenta> resultado = new ArrayList<>();
+        String sql = "SELECT * FROM cuentas";
         Connection c = DBManager.connect();
         try {
             Statement s = c.createStatement();
@@ -118,10 +120,11 @@ public class UserDaoH2Impl implements UserDao {
 
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String nombreUser = rs.getString("username");
-                String mail = rs.getString("email");
-                User u = new User(id, nombreUser, mail);
+                String tipo = rs.getString("tipo");
+                Integer titular = rs.getInt("titular");
+                Integer numero = rs.getInt("numero");
+                double saldo = rs.getDouble("saldo");
+                Cuenta u = new Cuenta(tipo, titular, numero, saldo);
                 resultado.add(u);
 
             }
@@ -132,6 +135,8 @@ public class UserDaoH2Impl implements UserDao {
                 e1.printStackTrace();
                 throw new DAOException();
             }
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 c.close();
@@ -143,8 +148,8 @@ public class UserDaoH2Impl implements UserDao {
         return resultado;
     }
 
-    public User checkUser(String email, String password) throws DAOException {
-        String sql = "SELECT * FROM usuarios WHERE email = '" + email + "' AND password = '" + password + "'";
+    public Cuenta checkCuenta(Integer numero, String tipo) throws DAOException {
+        String sql = "SELECT * FROM cuentas WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";
         Connection c = DBManager.connect();
         try {
             Statement s = c.createStatement();
@@ -152,11 +157,12 @@ public class UserDaoH2Impl implements UserDao {
 
 
             if (rs.next()) {
-                String nombreUser = rs.getString("username");
-                String mail = rs.getString("email");
-                String contrasenia = rs.getString("password");
-                User u = new User(nombreUser, mail, contrasenia);
-                return u;
+                Integer num = rs.getInt("numero");
+                String tip = rs.getString("tipo");
+                Integer titular = rs.getInt("titular");
+                double saldo = rs.getDouble("saldo");
+                Cuenta cuenta = new Cuenta(tip, titular, num, saldo);
+                return cuenta;
             }
 
         } catch (SQLException e) {
@@ -166,40 +172,8 @@ public class UserDaoH2Impl implements UserDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    public User getUser(Integer id) throws DAOException {
-        String sql = "SELECT * FROM usuarios WHERE id = '" + id + "'";
-        Connection c = DBManager.connect();
-        try {
-            Statement s = c.createStatement();
-            ResultSet rs = s.executeQuery(sql);
-
-
-            if (rs.next()) {
-                Integer idUser = rs.getInt("id");
-                String nombreUser = rs.getString("username");
-                String mail = rs.getString("email");
-                String contrasenia = rs.getString("password");
-                User u = new User(idUser, nombreUser, contrasenia, mail);
-                return u;
-            }
-
-        } catch (SQLException e) {
-            try {
-                c.rollback();
-                e.printStackTrace();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+        } catch (ServiceException e) {
+            throw new DAOException(e);
         } finally {
             try {
                 c.close();

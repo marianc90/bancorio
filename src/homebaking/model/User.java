@@ -7,7 +7,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private List<Account> accounts;
+    private List<Cuenta> cuentas;
     private List<Card> cards;
 
     public User() {}
@@ -19,6 +19,13 @@ public class User {
     }
 
     public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(Integer id, String username, String password, String email) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -52,12 +59,12 @@ public class User {
         this.email = email;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public List<Cuenta> getAccounts() {
+        return cuentas;
     }
 
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
+    public void setAccounts(List<Cuenta> cuentas) {
+        this.cuentas = cuentas;
     }
 
     public List<Card> getCards() {
@@ -67,4 +74,9 @@ public class User {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+    public boolean isAdmin() {
+        return username.equals("admin");
+    }
+
 }

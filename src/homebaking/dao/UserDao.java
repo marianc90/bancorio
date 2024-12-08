@@ -14,7 +14,9 @@ public interface UserDao {
 
     void actualizaUser(User aUser) throws DAOException;
 
-    User muestraUser(String username) throws DAOException;
+    User checkUser(String email, String password) throws DAOException;
+
+    User getUser(Integer id) throws DAOException;
 
     List<User> listaTodosLosUsers() throws DAOException;
 
