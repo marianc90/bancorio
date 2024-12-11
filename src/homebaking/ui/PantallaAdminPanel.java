@@ -33,7 +33,7 @@ public class PantallaAdminPanel extends JPanel {
         this.adminUsuarioBtn = new JButton("Administración de Usuarios");
         this.tarjetasBtn = new JButton("Gestionar Tarjetas");
         this.cuentaBtn = new JButton("Control de Cuentas");
-        this.transacBtn = new JButton("Transacciones");
+        this.transacBtn = new JButton("Movimientos");
         this.logoutBtn = new JButton("Cerrar Sesión");
 
         this.add(Box.createRigidArea(new Dimension(500, 10)));
@@ -49,12 +49,8 @@ public class PantallaAdminPanel extends JPanel {
         this.tarjetasBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+
+                    panelManager.mostrarPantallaAdminTarjetaPanel();
             }
         });
 
@@ -101,13 +97,8 @@ public class PantallaAdminPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //panelManager.mostrarPantallaAltaCuentaPanel();
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                panelManager.mostrarPantallaAdminMovimientoPanel();
+
             }
         });
 

@@ -1,5 +1,8 @@
-package homebaking.ui;
+package homebaking.ui.Usuario;
 
+
+import homebaking.ui.CamposPanel;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 import java.awt.*;

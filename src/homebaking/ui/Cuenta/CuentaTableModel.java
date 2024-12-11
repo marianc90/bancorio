@@ -1,43 +1,44 @@
-package homebaking.ui;
+package homebaking.ui.Cuenta;
 
-import homebaking.model.User;
+import homebaking.model.Cuenta;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioTableModel extends AbstractTableModel {
+public class CuentaTableModel extends AbstractTableModel {
 
     /**
      * INDICES DE MIS COLUMNAS
      */
-    private static final int COLUMNA_ID = 0;
-    private static final int COLUMNA_NOMBRE = 1;
-    private static final int COLUMNA_EMAIL = 2;
+    private static final int COLUMNA_NUMERO = 0;
+    private static final int COLUMNA_TIPO = 1;
+    private static final int COLUMNA_SALDO = 2;
+    private static final int COLUMNA_TITULAR = 3;
 
     /**
      * NOMBRES DE LOS ENCABEZADOS
      */
-    private String[] nombresColumnas = {"ID", "Nombre", "Email"};
+    private String[] nombresColumnas = {"NUMERO", "TIPO", "SALDO", "TITULAR"};
     /**
      * TIPOS DE CADA COLUMNA (EN EL MISMO ORDEN DE LOS ENCABEZADOS)
      */
-    private Class[] tiposColumnas = {Integer.class, String.class, String.class};
+    private Class[] tiposColumnas = {Integer.class, String.class, double.class, String.class};
 
-    private List<User> contenido;
+    private List<Cuenta> contenido;
 
     /**
      * CONSTRUCTOR VACIO
      */
-    public UsuarioTableModel() {
-        contenido = new ArrayList<User>();
+    public CuentaTableModel() {
+        contenido = new ArrayList<Cuenta>();
     }
 
     /**
      * CONSTRUCTOR CON CONTENIDO INICIAL
      * @param contenidoInicial
      */
-    public UsuarioTableModel(List<User> contenidoInicial) {
+    public CuentaTableModel(List<Cuenta> contenidoInicial) {
         contenido = contenidoInicial;
     }
 
@@ -60,18 +61,21 @@ public class UsuarioTableModel extends AbstractTableModel {
      */
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        User u = contenido.get(rowIndex);
+        Cuenta c = contenido.get(rowIndex);
 
         Object result = null;
         switch(columnIndex) {
-            case COLUMNA_ID:
-                result = u.getId();
+            case COLUMNA_NUMERO:
+                result = c.getNumero();
                 break;
-            case COLUMNA_NOMBRE:
-                result = u.getUsername();
+            case COLUMNA_TIPO:
+                result = c.getTipo();
                 break;
-            case COLUMNA_EMAIL:
-                result = u.getEmail();
+            case COLUMNA_SALDO:
+                result = c.getSaldo();
+                break;
+            case COLUMNA_TITULAR:
+                result = c.getTitular().getUsername();
                 break;
             default:
                 result = new String("");
@@ -101,7 +105,7 @@ public class UsuarioTableModel extends AbstractTableModel {
      * GETTER DE MIS FILAS
      * @return
      */
-    public List<User> getContenido() {
+    public List<Cuenta> getContenido() {
         return contenido;
     }
     /**
@@ -109,7 +113,7 @@ public class UsuarioTableModel extends AbstractTableModel {
      *
      * @param contenido
      */
-    public void setContenido(List<User> contenido) {
+    public void setContenido(List<Cuenta> contenido) {
         this.contenido = contenido;
     }
 }

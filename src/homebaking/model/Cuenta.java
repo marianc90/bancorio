@@ -1,7 +1,6 @@
 package homebaking.model;
 
 import homebaking.exceptions.ServiceException;
-import homebaking.service.CuentaService;
 import homebaking.service.UserService;
 
 import java.util.List;

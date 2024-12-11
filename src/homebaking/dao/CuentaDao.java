@@ -16,6 +16,8 @@ public interface CuentaDao {
 
     Cuenta checkCuenta(Integer numero, String tipo) throws DAOException;
 
+    Cuenta checkCuenta(Integer numero) throws DAOException;
+
     List<Cuenta> listaTodasLasCuentas() throws DAOException;
 
 }

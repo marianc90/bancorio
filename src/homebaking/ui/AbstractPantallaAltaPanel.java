@@ -5,6 +5,7 @@ import homebaking.exceptions.ServiceException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public abstract class AbstractPantallaAltaPanel extends JPanel {
 
@@ -31,7 +32,7 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     ejecutarAccionOk();
-                } catch (ServiceException ex) {
+                } catch (ServiceException | ParseException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -52,7 +53,7 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
 
     public abstract void setCamposPanel();
 
-    public abstract void ejecutarAccionOk() throws ServiceException;
+    public abstract void ejecutarAccionOk() throws ServiceException, ParseException;
 
     public abstract void ejecutarAccionCancel();
 

@@ -1,4 +1,7 @@
-package homebaking.ui;
+package homebaking.ui.Login;
+
+import homebaking.ui.BotoneraPanel;
+import homebaking.ui.PanelManager;
 
 public class LoginBotoneraPanel extends BotoneraPanel {
 

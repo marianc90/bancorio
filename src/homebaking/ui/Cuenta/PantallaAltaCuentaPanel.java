@@ -1,14 +1,14 @@
-package homebaking.ui;
+package homebaking.ui.Cuenta;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
-import homebaking.model.User;
 import homebaking.service.CuentaService;
-import homebaking.service.UserService;
+import homebaking.ui.AbstractPantallaAltaPanel;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 
-public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel{
+public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
 
     public PantallaAltaCuentaPanel(PanelManager panelManager) {
 
@@ -83,10 +83,8 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel{
         camposCuentaPanel.getTitularIDTxt().setEnabled(false);
         camposCuentaPanel.getSaldoTxt().setText(String.valueOf(c.getSaldo()));
         camposCuentaPanel.getSaldoTxt().setEnabled(true);
-        camposCuentaPanel.getSaldoTxt().setVisible(true);
         camposCuentaPanel.getNumeroTxt().setText(String.valueOf(c.getNumero()));
         camposCuentaPanel.getNumeroTxt().setEnabled(false);
-        camposCuentaPanel.getNumeroTxt().setVisible(true);
         camposCuentaPanel.setModoEdicion(true);
     }
 
@@ -97,10 +95,8 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel{
         camposCuentaPanel.getTitularIDTxt().setText("");
         camposCuentaPanel.getTitularIDTxt().setEnabled(true);
         camposCuentaPanel.getSaldoTxt().setEnabled(false);
-        camposCuentaPanel.getSaldoTxt().setVisible(false);
         camposCuentaPanel.getNumeroTxt().setText("");
         camposCuentaPanel.getNumeroTxt().setEnabled(false);
-        camposCuentaPanel.getNumeroTxt().setVisible(false);
         camposCuentaPanel.setModoEdicion(false);
     }
 

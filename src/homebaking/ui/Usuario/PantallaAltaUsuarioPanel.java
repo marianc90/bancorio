@@ -1,12 +1,14 @@
-package homebaking.ui;
+package homebaking.ui.Usuario;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.User;
 import homebaking.service.UserService;
+import homebaking.ui.AbstractPantallaAltaPanel;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 
-public class PantallaAltaUsuarioPanel extends AbstractPantallaAltaPanel{
+public class PantallaAltaUsuarioPanel extends AbstractPantallaAltaPanel {
 
     public PantallaAltaUsuarioPanel(PanelManager panelManager) {
         super(panelManager);

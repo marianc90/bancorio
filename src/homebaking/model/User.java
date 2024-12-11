@@ -8,7 +8,7 @@ public class User {
     private String password;
     private String email;
     private List<Cuenta> cuentas;
-    private List<Card> cards;
+    private List<Tarjeta> cards;
 
     public User() {}
 
@@ -67,11 +67,11 @@ public class User {
         this.cuentas = cuentas;
     }
 
-    public List<Card> getCards() {
+    public List<Tarjeta> getCards() {
         return cards;
     }
 
-    public void setCards(List<Card> cards) {
+    public void setCards(List<Tarjeta> cards) {
         this.cards = cards;
     }
 

@@ -1,4 +1,7 @@
-package homebaking.ui;
+package homebaking.ui.Cuenta;
+
+import homebaking.ui.CamposPanel;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +19,8 @@ public class CamposCuentaPanel extends CamposPanel {
     }
 
     public void armarFormulario() {
-        this.setLayout(new GridLayout(2,2,5,5));
+        this.setLayout(new GridLayout(2,2,10,10));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel tipoLbl = new JLabel("Tipo:");
         JLabel titularIDLbl = new JLabel("ID Titular:");

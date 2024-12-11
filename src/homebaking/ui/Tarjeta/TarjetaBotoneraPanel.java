@@ -1,8 +1,11 @@
-package homebaking.ui;
+package homebaking.ui.Tarjeta;
 
-public class UsuarioBotoneraPanel extends BotoneraPanel {
+import homebaking.ui.BotoneraPanel;
+import homebaking.ui.PanelManager;
 
-    public UsuarioBotoneraPanel(PanelManager p) {
+public class TarjetaBotoneraPanel extends BotoneraPanel {
+
+    public TarjetaBotoneraPanel(PanelManager p) {
         super(p);
     }
 

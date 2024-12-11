@@ -2,11 +2,9 @@ package homebaking.service;
 
 import homebaking.dao.CuentaDao;
 import homebaking.exceptions.DAOException;
-import homebaking.exceptions.ObjectoDuplicadoException;
 import homebaking.exceptions.ServiceException;
 import homebaking.h2Impl.CuentaDaoH2Impl;
 import homebaking.model.Cuenta;
-import homebaking.model.User;
 
 import java.util.List;
 
@@ -52,6 +50,14 @@ public class CuentaService {
     public Cuenta checkCuenta(Integer numero, String tipo) throws ServiceException {
         try {
             return dao.checkCuenta(numero, tipo);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public Cuenta checkCuenta(Integer numero) throws ServiceException {
+        try {
+            return dao.checkCuenta(numero);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

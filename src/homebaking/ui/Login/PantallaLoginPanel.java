@@ -1,12 +1,14 @@
-package homebaking.ui;
+package homebaking.ui.Login;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.User;
 import homebaking.service.UserService;
+import homebaking.ui.AbstractPantallaAltaPanel;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 
-public class PantallaLoginPanel extends AbstractPantallaAltaPanel{
+public class PantallaLoginPanel extends AbstractPantallaAltaPanel {
 
     public PantallaLoginPanel(PanelManager panelManager) {
         super(panelManager);

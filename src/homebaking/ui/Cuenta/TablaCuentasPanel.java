@@ -1,16 +1,18 @@
-package homebaking.ui;
+package homebaking.ui.Cuenta;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
-import homebaking.model.User;
 import homebaking.service.CuentaService;
-import homebaking.service.UserService;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class TablaCuentasPanel extends JPanel implements ActionListener {
@@ -40,6 +42,20 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
         scrollPaneParaTabla = new JScrollPane(tablaCuentas);
         this.add(scrollPaneParaTabla);
 
+        tablaCuentas.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Doble clic para copiar
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    int column = target.getSelectedColumn();
+                    Object value = target.getValueAt(row, column);
+                    StringSelection stringSelection = new StringSelection(value.toString());
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+                    JOptionPane.showMessageDialog(null, "Texto copiado: " + value.toString());
+                }
+            }
+        });
+
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener(this);
         this.add(botonVolver);
@@ -48,7 +64,7 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
         botonAgregar.addActionListener(this);
         this.add(botonAgregar);
 
-        botonEditar = new JButton("Actualizar Saldo");
+        botonEditar = new JButton("Actualizar Saldo +/-");
         botonEditar.addActionListener(this);
         this.add(botonEditar);
 
@@ -100,9 +116,11 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
             List<Cuenta> listaTodasLasCuentas = s.listaTodasLasCuentas();
             modelo.setContenido(listaTodasLasCuentas);
             modelo.fireTableDataChanged();
-            tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(15);
+            tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tablaCuentas.getColumnModel().getColumn(1).setPreferredWidth(15);
             leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
             tablaCuentas.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+            tablaCuentas.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
         } catch (ServiceException ex) {
             JOptionPane.showMessageDialog(this, "No se pudo obtener lista de cuentas.");
         }

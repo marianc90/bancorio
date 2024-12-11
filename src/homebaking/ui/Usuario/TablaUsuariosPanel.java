@@ -1,14 +1,18 @@
-package homebaking.ui;
+package homebaking.ui.Usuario;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.User;
 import homebaking.service.UserService;
+import homebaking.ui.PanelManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class TablaUsuariosPanel extends JPanel implements ActionListener {
@@ -37,6 +41,20 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
         tablaUsuarios = new JTable(modelo);
         scrollPaneParaTabla = new JScrollPane(tablaUsuarios);
         this.add(scrollPaneParaTabla);
+
+        tablaUsuarios.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Doble clic para copiar
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    int column = target.getSelectedColumn();
+                    Object value = target.getValueAt(row, column);
+                    StringSelection stringSelection = new StringSelection(value.toString());
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+                    JOptionPane.showMessageDialog(null, "Texto copiado: " + value.toString());
+                }
+            }
+        });
 
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener(this);

@@ -1,8 +1,11 @@
-package homebaking.ui;
+package homebaking.ui.Usuario;
 
-public class CuentaBotoneraPanel extends BotoneraPanel {
+import homebaking.ui.BotoneraPanel;
+import homebaking.ui.PanelManager;
 
-    public CuentaBotoneraPanel(PanelManager p) {
+public class UsuarioBotoneraPanel extends BotoneraPanel {
+
+    public UsuarioBotoneraPanel(PanelManager p) {
         super(p);
     }
 
