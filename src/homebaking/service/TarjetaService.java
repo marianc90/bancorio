@@ -5,6 +5,7 @@ import homebaking.exceptions.DAOException;
 import homebaking.exceptions.ServiceException;
 import homebaking.h2Impl.TarjetaDaoH2Impl;
 import homebaking.model.Tarjeta;
+import homebaking.model.User;
 
 import java.util.List;
 
@@ -27,6 +28,14 @@ public class TarjetaService {
     public List<Tarjeta> listaTodasLasTarjetas() throws ServiceException {
         try {
             return dao.listaTodasLasTarjetas();
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
+    }
+
+    public List<Tarjeta> listaTarjetasUser(User u) throws ServiceException {
+        try {
+            return dao.listaTarjetasUser(u.getId());
         } catch (DAOException e) {
             throw new ServiceException();
         }

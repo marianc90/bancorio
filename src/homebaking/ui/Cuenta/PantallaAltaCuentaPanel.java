@@ -3,6 +3,7 @@ package homebaking.ui.Cuenta;
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
 import homebaking.service.CuentaService;
+import homebaking.service.MovimientoService;
 import homebaking.ui.AbstractPantallaAltaPanel;
 import homebaking.ui.PanelManager;
 
@@ -10,13 +11,13 @@ import javax.swing.*;
 
 public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
 
-    public PantallaAltaCuentaPanel(PanelManager panelManager) {
+    public PantallaAltaCuentaPanel(PanelManager panelManager) throws ServiceException {
 
         super(panelManager);
     }
 
     @Override
-    public void setCamposPanel() {
+    public void setCamposPanel() throws ServiceException {
         this.camposPanel = new CamposCuentaPanel(panelManager);
         this.botonesPanel = new CuentaBotoneraPanel(panelManager);
     }
@@ -51,8 +52,17 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
             try {
                 CuentaService s = new CuentaService();
                 Cuenta c = s.checkCuenta(numero, tipo);
-                c.setSaldo(saldo);
-                s.actualizaSaldo(c);
+                String tipomov = "";
+                //c.setSaldo(saldo);
+                //s.actualizaSaldo(c);
+                MovimientoService ms = new MovimientoService();
+                if (saldo < 0) {
+                    tipomov = "DEBITO";
+                    saldo = saldo * -1;
+                } else {
+                    tipomov = "CREDITO";
+                }
+                ms.crearMovimiento("Ajuste de saldo", saldo, tipomov,c,null,null);
                 panelManager.mostrarPantallaAdminCuentaPanel();
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, "LA CUENTA "+numero+" NO EXISTE");

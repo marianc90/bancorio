@@ -17,13 +17,13 @@ import java.util.Date;
 
 public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
 
-    public PantallaAltaMovimientoPanel(PanelManager panelManager) {
+    public PantallaAltaMovimientoPanel(PanelManager panelManager) throws ServiceException {
 
         super(panelManager);
     }
 
     @Override
-    public void setCamposPanel() {
+    public void setCamposPanel() throws ServiceException {
         this.camposPanel = new CamposMovimientoPanel(panelManager);
         this.botonesPanel = new MovimientoBotoneraPanel(panelManager);
     }
@@ -39,7 +39,7 @@ public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
         Integer cuentaOrigen = null;
         Integer cuentaDestino = null;
         Long tarjeta = null;
-        if (tipo.equals("CONSUMO") || tipo.equals("PAGO")) {
+        if (tipo.equals("CONSUMO") || tipo.equals("AJUSTE")) {
             String tarjetaStr = campos.getTarjetaTxt().getText();
             if (tarjetaStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
@@ -64,6 +64,17 @@ public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
                 return;
             } else {
                 cuentaOrigen = Integer.parseInt(cuentaOrigenStr);
+            }
+
+        } else if (tipo.equals("PAGO")) {
+            String tarjetaStr = campos.getTarjetaTxt().getText();
+            String cuentaOrigenStr = campos.getCuentaOrigenTxt().getText();
+            if (cuentaOrigenStr.isEmpty() || tarjetaStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            } else {
+                cuentaOrigen = Integer.parseInt(cuentaOrigenStr);
+                tarjeta = Long.parseLong(tarjetaStr);
             }
 
         }
@@ -134,7 +145,10 @@ public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
         camposMovimientoPanel.getFechaTxt().setEnabled(true);
         camposMovimientoPanel.getDescripcionTxt().setText(m.getDescripcion());
         camposMovimientoPanel.getDescripcionTxt().setEnabled(true);
-        camposMovimientoPanel.getTipoComboBox().setSelectedItem(m.getTipo().equals("TRANSFERENCIA") ? "Transferencia" : m.getTipo().equals("DEBITO") ? "Débito" : m.getTipo().equals("CREDITO") ? "Crédito" : m.getTipo().equals("CONSUMO") ? "Consumo" : "Pago");
+        //if (camposMovimientoPanel.getTiposModel().getIndexOf("Pago") == -1) {
+       //     camposMovimientoPanel.getTiposModel().addElement("Pago");
+      //  }
+        camposMovimientoPanel.getTipoComboBox().setSelectedItem(m.getTipo().equals("TRANSFERENCIA") ? "Transferencia" : m.getTipo().equals("DEBITO") ? "Débito" : m.getTipo().equals("CREDITO") ? "Crédito" : m.getTipo().equals("CONSUMO") ? "Consumo TC" : m.getTipo().equals("AJUSTE") ? "Ajuste TC" : m.getTipo().equals("PAGO") ? "Pago" : "Otra");
         camposMovimientoPanel.getTipoComboBox().setEnabled(false);
         camposMovimientoPanel.getMontoTxt().setText(String.valueOf(m.getMonto()));
         camposMovimientoPanel.getMontoTxt().setEnabled(false);
@@ -148,25 +162,26 @@ public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
     }
 
     public void vaciarDatos() {
-        CamposMovimientoPanel camposTarjetaPanel = (CamposMovimientoPanel) this.camposPanel;
-        camposTarjetaPanel.getIdTxt().setText("");
-        camposTarjetaPanel.getIdTxt().setEnabled(false);
-        camposTarjetaPanel.getFechaTxt().setText("");
-        camposTarjetaPanel.getFechaTxt().setEnabled(false);
-        camposTarjetaPanel.getDescripcionTxt().setText("");
-        camposTarjetaPanel.getDescripcionTxt().setEnabled(true);
-        camposTarjetaPanel.getMontoTxt().setText("");
-        camposTarjetaPanel.getMontoTxt().setEnabled(true);
-        camposTarjetaPanel.getTipoComboBox().setSelectedItem("Transferencia");
-        camposTarjetaPanel.getTipoComboBox().setEnabled(true);
-        camposTarjetaPanel.getCuentaOrigenTxt().setText("");
-        camposTarjetaPanel.getCuentaOrigenTxt().setEnabled(true);
-        camposTarjetaPanel.getCuentaDestinoTxt().setText("");
-        camposTarjetaPanel.getCuentaDestinoTxt().setEnabled(true);
-        camposTarjetaPanel.getTarjetaTxt().setText("");
-        camposTarjetaPanel.getTarjetaTxt().setEnabled(true);
-        camposTarjetaPanel.setModoEdicion("no");
-        camposTarjetaPanel.actualizarCampos();
+        CamposMovimientoPanel camposMovimientoPanel = (CamposMovimientoPanel) this.camposPanel;
+        camposMovimientoPanel.getIdTxt().setText("");
+        camposMovimientoPanel.getIdTxt().setEnabled(false);
+        camposMovimientoPanel.getFechaTxt().setText("");
+        camposMovimientoPanel.getFechaTxt().setEnabled(false);
+        camposMovimientoPanel.getDescripcionTxt().setText("");
+        camposMovimientoPanel.getDescripcionTxt().setEnabled(true);
+        camposMovimientoPanel.getMontoTxt().setText("");
+        camposMovimientoPanel.getMontoTxt().setEnabled(true);
+        //camposMovimientoPanel.getTiposModel().removeElement("Pago");
+        camposMovimientoPanel.getTipoComboBox().setSelectedItem("Transferencia");
+        camposMovimientoPanel.getTipoComboBox().setEnabled(true);
+        camposMovimientoPanel.getCuentaOrigenTxt().setText("");
+        camposMovimientoPanel.getCuentaOrigenTxt().setEnabled(true);
+        camposMovimientoPanel.getCuentaDestinoTxt().setText("");
+        camposMovimientoPanel.getCuentaDestinoTxt().setEnabled(true);
+        camposMovimientoPanel.getTarjetaTxt().setText("");
+        camposMovimientoPanel.getTarjetaTxt().setEnabled(true);
+        camposMovimientoPanel.setModoEdicion("no");
+        camposMovimientoPanel.actualizarCampos();
     }
 
 

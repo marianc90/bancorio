@@ -152,10 +152,11 @@ public class UserDaoH2Impl implements UserDao {
 
 
             if (rs.next()) {
+                Integer idUser = rs.getInt("id");
                 String nombreUser = rs.getString("username");
                 String mail = rs.getString("email");
                 String contrasenia = rs.getString("password");
-                User u = new User(nombreUser, mail, contrasenia);
+                User u = new User(idUser, nombreUser, mail, contrasenia);
                 return u;
             }
 

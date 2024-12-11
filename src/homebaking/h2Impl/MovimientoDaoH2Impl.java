@@ -29,7 +29,9 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
                 sql = "INSERT INTO movimientos (id, fecha, descripcion, monto, tipo, cuentaOrigen, cuentaDestino) VALUES (?, ?, ?, ?, ?, ?, ?)";
             } else if (tipo.equals("CREDITO") || tipo.equals("DEBITO")) {
                 sql = "INSERT INTO movimientos (id, fecha, descripcion, monto, tipo, cuentaOrigen) VALUES (?, ?, ?, ?, ?, ?)";
-            } else if (tipo.equals("CONSUMO") || tipo.equals("PAGO")) {
+            } else if (tipo.equals("PAGO")) {
+                sql = "INSERT INTO movimientos (id, fecha, descripcion, monto, tipo, cuentaOrigen, tarjeta) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            } else if (tipo.equals("CONSUMO") || tipo.equals("AJUSTE")) {
                 sql = "INSERT INTO movimientos (id, fecha, descripcion, monto, tipo, tarjeta) VALUES (?, ?, ?, ?, ?, ?)";
             } else {
                 throw new DAOException("Tipo de movimiento no soportado");
@@ -51,9 +53,15 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
                     throw new DAOException("Cuenta origen inválida para crédito o débito");
                 }
                 ps.setInt(6, unMovimiento.getCuentaOrigen().getNumero());
-            } else if (tipo.equals("CONSUMO") || tipo.equals("PAGO")) {
+            } else if (tipo.equals("PAGO")) {
                 if (unMovimiento.getTarjeta() == null) {
                     throw new DAOException("Tarjeta inválida para consumo o pago");
+                }
+                ps.setInt(6, unMovimiento.getCuentaOrigen().getNumero());
+                ps.setLong(7, unMovimiento.getTarjeta().getNumero());
+            } else if (tipo.equals("CONSUMO") || tipo.equals("AJUSTE")) {
+                if (unMovimiento.getTarjeta() == null) {
+                    throw new DAOException("Tarjeta inválida para consumo o ajuste");
                 }
                 ps.setLong(6, unMovimiento.getTarjeta().getNumero());
             }
@@ -109,41 +117,14 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
         Long id = unMovimiento.getId();
         Date fecha = unMovimiento.getFecha();
         String descripcion = unMovimiento.getDescripcion();
-        String tipo = unMovimiento.getTipo();
 
-        String sql = "UPDATE movimientos SET fecha = ?, descripcion = ?, cuentaOrigen = ?, cuentaDestino = ?, tarjeta = ? WHERE id = ?";
+        String sql = "UPDATE movimientos SET fecha = ?, descripcion = ? WHERE id = ?";
         Connection c = DBManager.connect();
         try {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setDate(1, new java.sql.Date(fecha.getTime()));
             ps.setString(2, descripcion);
-
-            if (tipo.equals("TRANSFERENCIA")) {
-                if (unMovimiento.getCuentaOrigen() == null || unMovimiento.getCuentaDestino() == null) {
-                    throw new DAOException("Cuenta origen o destino inválida");
-                }
-                ps.setInt(3, unMovimiento.getCuentaOrigen().getNumero());
-                ps.setInt(4, unMovimiento.getCuentaDestino().getNumero());
-                ps.setNull(5, Types.BIGINT);
-            } else if (tipo.equals("CREDITO") || tipo.equals("DEBITO")) {
-                if (unMovimiento.getCuentaOrigen() == null) {
-                    throw new DAOException("Cuenta origen inválida para crédito o débito");
-                }
-                ps.setInt(3, unMovimiento.getCuentaOrigen().getNumero());
-                ps.setNull(4, Types.INTEGER);
-                ps.setNull(5, Types.BIGINT);
-            } else if (tipo.equals("CONSUMO") || tipo.equals("PAGO")) {
-                if (unMovimiento.getTarjeta() == null) {
-                    throw new DAOException("Tarjeta inválida para consumo o pago");
-                }
-                ps.setNull(3, Types.INTEGER);
-                ps.setNull(4, Types.INTEGER);
-                ps.setLong(5, unMovimiento.getTarjeta().getNumero());
-            } else {
-                throw new DAOException("Tipo de movimiento no soportado");
-            }
-
-            ps.setLong(6, id);
+            ps.setLong(3, id);
             ps.executeUpdate();
             c.commit();
         } catch (SQLException e) {
@@ -167,6 +148,90 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
     public List<Movimiento> listaTodosLosMovimientos() throws DAOException {
         List<Movimiento> resultado = new ArrayList<>();
         String sql = "SELECT * FROM movimientos";
+        Connection c = DBManager.connect();
+        try {
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Date fecha = rs.getDate("fecha");
+                String descripcion = rs.getString("descripcion");
+                double monto = rs.getDouble("monto");
+                String tipo = rs.getString("tipo");
+                Integer cuentaOrigen = rs.getInt("cuentaOrigen");
+                Integer cuentaDestino = rs.getInt("cuentaDestino");
+                Long tarjeta = rs.getLong("tarjeta");
+                Movimiento m = new Movimiento(id, fecha, descripcion, monto, tipo, cuentaOrigen, cuentaDestino, tarjeta);
+                resultado.add(m);
+
+            }
+        } catch (SQLException e) {
+            try {
+                c.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        }
+        return resultado;
+    }
+
+    public List<Movimiento> listaMovimCuenta(Integer numero) throws DAOException {
+        List<Movimiento> resultado = new ArrayList<>();
+        String sql = "SELECT * FROM movimientos WHERE CUENTAORIGEN = '" + numero + "' OR CUENTADESTINO = '" + numero + "'";
+        Connection c = DBManager.connect();
+        try {
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Date fecha = rs.getDate("fecha");
+                String descripcion = rs.getString("descripcion");
+                double monto = rs.getDouble("monto");
+                String tipo = rs.getString("tipo");
+                Integer cuentaOrigen = rs.getInt("cuentaOrigen");
+                Integer cuentaDestino = rs.getInt("cuentaDestino");
+                Long tarjeta = rs.getLong("tarjeta");
+                Movimiento m = new Movimiento(id, fecha, descripcion, monto, tipo, cuentaOrigen, cuentaDestino, tarjeta);
+                resultado.add(m);
+
+            }
+        } catch (SQLException e) {
+            try {
+                c.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        }
+        return resultado;
+    }
+
+    public List<Movimiento> listaMovimTarjeta(Long numero) throws DAOException {
+        List<Movimiento> resultado = new ArrayList<>();
+        String sql = "SELECT * FROM movimientos WHERE TARJETA = '" + numero + "'";
         Connection c = DBManager.connect();
         try {
             Statement s = c.createStatement();

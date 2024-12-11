@@ -20,4 +20,6 @@ public interface TarjetaDao {
 
     List<Tarjeta> listaTodasLasTarjetas() throws DAOException;
 
+    List<Tarjeta> listaTarjetasUser(Integer id) throws DAOException;
+
 }

@@ -1,8 +1,7 @@
-package homebaking.ui.Cuenta;
+package homebaking.ui.CuentaUser;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
-import homebaking.model.Tarjeta;
 import homebaking.service.CuentaService;
 import homebaking.ui.PanelManager;
 
@@ -16,21 +15,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class TablaCuentasPanel extends JPanel implements ActionListener {
+public class TablaCuentasUserPanel extends JPanel implements ActionListener {
 
     private JTable tablaCuentas;
-    private CuentaTableModel modelo;
+    private CuentaUserTableModel modelo;
 
     private JScrollPane scrollPaneParaTabla;
     private JButton botonVolver;
-    private JButton botonAgregar;
-    private JButton botonBorrar;
-    private JButton botonEditar;
     private JButton botonMovimientos;
     private PanelManager panelManager;
     CuentaService s = new CuentaService();
 
-    public TablaCuentasPanel(PanelManager panelManager) {
+    public TablaCuentasUserPanel(PanelManager panelManager) {
         super();
         this.panelManager = panelManager;
         armarPanel();
@@ -39,7 +35,7 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
     private void armarPanel() {
         this.setLayout(new FlowLayout());
 
-        modelo = new CuentaTableModel();
+        modelo = new CuentaUserTableModel();
         tablaCuentas = new JTable(modelo);
         scrollPaneParaTabla = new JScrollPane(tablaCuentas);
         this.add(scrollPaneParaTabla);
@@ -62,18 +58,6 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
         botonVolver.addActionListener(this);
         this.add(botonVolver);
 
-        botonAgregar = new JButton("Crear Cuenta");
-        botonAgregar.addActionListener(this);
-        this.add(botonAgregar);
-
-        botonEditar = new JButton("Actualizar Saldo +/-");
-        botonEditar.addActionListener(this);
-        this.add(botonEditar);
-
-        botonBorrar = new JButton("Eliminar");
-        botonBorrar.addActionListener(this);
-        this.add(botonBorrar);
-
         botonMovimientos = new JButton("Ver Movimientos");
         botonMovimientos.addActionListener(this);
         this.add(botonMovimientos);
@@ -81,55 +65,25 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == botonEditar) {
-            int filaSeleccionada = this.tablaCuentas.getSelectedRow();
-
-            if (filaSeleccionada != -1) {
-                Cuenta cuentaSeleccionada = this.modelo.getContenido().get(filaSeleccionada);
-
-                this.panelManager.mostrarPantallaEdicionCuentaPanel(cuentaSeleccionada);
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una cuenta para actualizar su saldo.");
-            }
-
-        } else if (e.getSource() == botonAgregar) {
-            this.panelManager.mostrarPantallaAltaCuentaPanel();
-
-        } else if (e.getSource() == botonBorrar) {
-            int filaSeleccionada = this.tablaCuentas.getSelectedRow();
-            if (filaSeleccionada != -1) {
-                Cuenta cuenta = this.modelo.getContenido().get(filaSeleccionada);
-                try {
-                    s.borrarCuenta(cuenta);
-                    this.modelo.getContenido().remove(filaSeleccionada);
-                    modelo.fireTableDataChanged();
-                } catch (ServiceException ex) {
-                    JOptionPane.showMessageDialog(this, "LA CUENTA "+cuenta.getNumero()+" NO PUDO SER BORRADA");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una cuenta para borrar.");
-            }
-
-        } else if (e.getSource() == botonMovimientos) {
-            int filaSeleccionada = this.tablaCuentas.getSelectedRow();
-            if (filaSeleccionada != -1) {
-                Cuenta cuenta = this.modelo.getContenido().get(filaSeleccionada);
-                this.panelManager.mostrarPantallaMovimCuentaPanel(cuenta);
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione una cuenta para ver sus movimientos.");
-            }
+       if (e.getSource() == botonMovimientos) {
+           int filaSeleccionada = this.tablaCuentas.getSelectedRow();
+           if (filaSeleccionada != -1) {
+               Cuenta cuenta = this.modelo.getContenido().get(filaSeleccionada);
+               this.panelManager.mostrarPantallaUserMovimCuentaPanel(cuenta);
+           } else {
+               JOptionPane.showMessageDialog(this, "Por favor, seleccione una cuenta para ver sus movimientos.");
+           }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
+            panelManager.mostrarUserPanel();
 
         }
     }
     public void refrescarTabla() {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         try {
-            List<Cuenta> listaTodasLasCuentas = s.listaTodasLasCuentas();
-            modelo.setContenido(listaTodasLasCuentas);
+            List<Cuenta> listaCuentasUser = s.listaCuentasUser(panelManager.getUserLogueado());
+            modelo.setContenido(listaCuentasUser);
             modelo.fireTableDataChanged();
             tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(100);
             tablaCuentas.getColumnModel().getColumn(1).setPreferredWidth(15);

@@ -14,7 +14,7 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
     protected BotoneraPanel botonesPanel;
 
 
-    public AbstractPantallaAltaPanel(PanelManager panelManager) {
+    public AbstractPantallaAltaPanel(PanelManager panelManager) throws ServiceException {
         this.panelManager = panelManager;
         this.setCamposPanel();
         this.setBotoneraPanel();
@@ -51,7 +51,7 @@ public abstract class AbstractPantallaAltaPanel extends JPanel {
         this.botonesPanel = new BotoneraPanel(this.panelManager);
     }
 
-    public abstract void setCamposPanel();
+    public abstract void setCamposPanel() throws ServiceException;
 
     public abstract void ejecutarAccionOk() throws ServiceException, ParseException;
 

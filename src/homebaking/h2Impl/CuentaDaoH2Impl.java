@@ -147,6 +147,43 @@ public class CuentaDaoH2Impl implements CuentaDao {
         }
         return resultado;
     }
+    public List<Cuenta> listaCuentasUser(Integer id) throws DAOException {
+        List<Cuenta> resultado = new ArrayList<>();
+        String sql = "SELECT * FROM cuentas where titular = '" + id + "'";
+        Connection c = DBManager.connect();
+        try {
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+
+            while (rs.next()) {
+                String tipo = rs.getString("tipo");
+                Integer titular = rs.getInt("titular");
+                Integer numero = rs.getInt("numero");
+                double saldo = rs.getDouble("saldo");
+                Cuenta u = new Cuenta(tipo, titular, numero, saldo);
+                resultado.add(u);
+
+            }
+        } catch (SQLException e) {
+            try {
+                c.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        }
+        return resultado;
+    }
 
     public Cuenta checkCuenta(Integer numero, String tipo) throws DAOException {
         String sql = "SELECT * FROM cuentas WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";

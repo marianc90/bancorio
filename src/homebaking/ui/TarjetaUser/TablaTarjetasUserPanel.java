@@ -1,6 +1,7 @@
-package homebaking.ui.Tarjeta;
+package homebaking.ui.TarjetaUser;
 
 import homebaking.exceptions.ServiceException;
+import homebaking.model.Cuenta;
 import homebaking.model.Tarjeta;
 import homebaking.service.TarjetaService;
 import homebaking.ui.PanelManager;
@@ -15,22 +16,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class TablaTarjetasPanel extends JPanel implements ActionListener {
+public class TablaTarjetasUserPanel extends JPanel implements ActionListener {
 
     private JTable tablaTarjetas;
-    private TarjetaTableModel modelo;
+    private TarjetaUserTableModel modelo;
 
     private JScrollPane scrollPaneParaTabla;
     private JButton botonVolver;
-    private JButton botonAgregar;
-    private JButton botonBorrar;
     private JButton botonActualizarSaldo;
-    private JButton botonEditarDisponible;
     private JButton botonMovimientos;
     private PanelManager panelManager;
     TarjetaService s = new TarjetaService();
 
-    public TablaTarjetasPanel(PanelManager panelManager) {
+    public TablaTarjetasUserPanel(PanelManager panelManager) {
         super();
         this.panelManager = panelManager;
         armarPanel();
@@ -39,7 +37,7 @@ public class TablaTarjetasPanel extends JPanel implements ActionListener {
     private void armarPanel() {
         this.setLayout(new FlowLayout());
 
-        modelo = new TarjetaTableModel();
+        modelo = new TarjetaUserTableModel();
         tablaTarjetas = new JTable(modelo);
         scrollPaneParaTabla = new JScrollPane(tablaTarjetas);
         this.add(scrollPaneParaTabla);
@@ -62,21 +60,9 @@ public class TablaTarjetasPanel extends JPanel implements ActionListener {
         botonVolver.addActionListener(this);
         this.add(botonVolver);
 
-        botonAgregar = new JButton("Crear Tarjeta");
-        botonAgregar.addActionListener(this);
-        this.add(botonAgregar);
-
-        botonActualizarSaldo = new JButton("Saldo +/-");
+        botonActualizarSaldo = new JButton("Pagar Tarjeta");
         botonActualizarSaldo.addActionListener(this);
         this.add(botonActualizarSaldo);
-
-        botonEditarDisponible = new JButton("Límite");
-        botonEditarDisponible.addActionListener(this);
-        this.add(botonEditarDisponible);
-
-        botonBorrar = new JButton("Eliminar");
-        botonBorrar.addActionListener(this);
-        this.add(botonBorrar);
 
         botonMovimientos = new JButton("Ver Movimientos");
         botonMovimientos.addActionListener(this);
@@ -91,59 +77,31 @@ public class TablaTarjetasPanel extends JPanel implements ActionListener {
             if (filaSeleccionada != -1) {
                 Tarjeta tarjetaSeleccionada = this.modelo.getContenido().get(filaSeleccionada);
 
-                this.panelManager.mostrarPantallaEdicionTarjetaPanel(tarjetaSeleccionada, "saldo");
+                this.panelManager.mostrarPantallaNuevoMovimUserPanel(tarjetaSeleccionada);
 
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una tarjeta para modificar su saldo.");
+                JOptionPane.showMessageDialog(this, "Por favor selecciona una tarjeta para pagar su saldo.");
             }
-
-        } else if (e.getSource() == botonEditarDisponible) {
-            int filaSeleccionada = this.tablaTarjetas.getSelectedRow();
-
-            if (filaSeleccionada != -1) {
-                Tarjeta tarjetaSeleccionada = this.modelo.getContenido().get(filaSeleccionada);
-
-                this.panelManager.mostrarPantallaEdicionTarjetaPanel(tarjetaSeleccionada, "disponible");
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una tarjeta para modificar su límite.");
-            }
-        } else if (e.getSource() == botonAgregar) {
-            this.panelManager.mostrarPantallaAltaTarjetaPanel();
-
-        } else if (e.getSource() == botonBorrar) {
-            int filaSeleccionada = this.tablaTarjetas.getSelectedRow();
-            if (filaSeleccionada != -1) {
-                Tarjeta tarjeta = this.modelo.getContenido().get(filaSeleccionada);
-                try {
-                    s.borrarTarjeta(tarjeta);
-                    this.modelo.getContenido().remove(filaSeleccionada);
-                    modelo.fireTableDataChanged();
-                } catch (ServiceException ex) {
-                    JOptionPane.showMessageDialog(this, "LA TARJETA "+tarjeta.getNumero()+" NO PUDO SER BORRADA");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una tarjeta para borrar.");
-            }
-
-        } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
 
         } else if (e.getSource() == botonMovimientos) {
             int filaSeleccionada = this.tablaTarjetas.getSelectedRow();
             if (filaSeleccionada != -1) {
-                Tarjeta tarjetaSeleccionada = this.modelo.getContenido().get(filaSeleccionada);
-                this.panelManager.mostrarPantallaMovimTarjetaPanel(tarjetaSeleccionada);
+                Tarjeta tarjeta = this.modelo.getContenido().get(filaSeleccionada);
+                this.panelManager.mostrarPantallaUserMovimTarjetaPanel(tarjeta);
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor selecciona una tarjeta para ver sus movimientos.");
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una tarjeta para ver sus movimientos.");
             }
+
+        } else if (e.getSource() == botonVolver){
+            panelManager.mostrarUserPanel();
+
         }
     }
     public void refrescarTabla() {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         try {
-            List<Tarjeta> listaTodasLasTarjetas = s.listaTodasLasTarjetas();
-            modelo.setContenido(listaTodasLasTarjetas);
+            List<Tarjeta> listaTarjetasUser = s.listaTarjetasUser(panelManager.getUserLogueado());
+            modelo.setContenido(listaTarjetasUser);
             modelo.fireTableDataChanged();
             tablaTarjetas.getColumnModel().getColumn(0).setPreferredWidth(100);
             leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);

@@ -10,12 +10,12 @@ import javax.swing.*;
 
 public class PantallaLoginPanel extends AbstractPantallaAltaPanel {
 
-    public PantallaLoginPanel(PanelManager panelManager) {
+    public PantallaLoginPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 
     @Override
-    public void setCamposPanel() {
+    public void setCamposPanel() throws ServiceException {
         this.camposPanel = new CamposLoginPanel(panelManager);
         this.botonesPanel = new LoginBotoneraPanel(panelManager);
     }

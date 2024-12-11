@@ -1,5 +1,6 @@
 package homebaking.ui.Tarjeta;
 
+import homebaking.exceptions.ServiceException;
 import homebaking.ui.CamposPanel;
 import homebaking.ui.PanelManager;
 
@@ -15,7 +16,7 @@ public class CamposTarjetaPanel extends CamposPanel {
     private JTextField disponibleTxt;
     private String modoEdicion = "no"; //no, saldo, disponible
 
-    public CamposTarjetaPanel(PanelManager panelManager) {
+    public CamposTarjetaPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 

@@ -5,6 +5,7 @@ import homebaking.exceptions.DAOException;
 import homebaking.exceptions.ServiceException;
 import homebaking.h2Impl.CuentaDaoH2Impl;
 import homebaking.model.Cuenta;
+import homebaking.model.User;
 
 import java.util.List;
 
@@ -25,6 +26,15 @@ public class CuentaService {
     public List<Cuenta> listaTodasLasCuentas() throws ServiceException {
         try {
             return dao.listaTodasLasCuentas();
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
+    }
+
+    public List<Cuenta> listaCuentasUser(User u) throws ServiceException {
+        try {
+            Integer id = u.getId();
+            return dao.listaCuentasUser(id);
         } catch (DAOException e) {
             throw new ServiceException();
         }

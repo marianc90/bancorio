@@ -18,5 +18,9 @@ public interface MovimientoDao {
 
     List<Movimiento> listaTodosLosMovimientos() throws DAOException;
 
+    List<Movimiento> listaMovimCuenta(Integer numero) throws DAOException;
+
+    List<Movimiento> listaMovimTarjeta(Long numero) throws DAOException;
+
 
 }

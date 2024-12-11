@@ -1,6 +1,7 @@
 package homebaking.ui.Login;
 
 
+import homebaking.exceptions.ServiceException;
 import homebaking.ui.CamposPanel;
 import homebaking.ui.PanelManager;
 
@@ -12,7 +13,7 @@ public class CamposLoginPanel extends CamposPanel {
     private JTextField emailTxt;
     private JTextField passwordTxt;
 
-    public CamposLoginPanel(PanelManager panelManager) {
+    public CamposLoginPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 

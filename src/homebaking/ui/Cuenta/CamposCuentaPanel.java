@@ -1,5 +1,6 @@
 package homebaking.ui.Cuenta;
 
+import homebaking.exceptions.ServiceException;
 import homebaking.ui.CamposPanel;
 import homebaking.ui.PanelManager;
 
@@ -14,7 +15,7 @@ public class CamposCuentaPanel extends CamposPanel {
     private JTextField numeroTxt;
     private boolean esEdicion = false;
 
-    public CamposCuentaPanel(PanelManager panelManager) {
+    public CamposCuentaPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 

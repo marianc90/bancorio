@@ -20,4 +20,6 @@ public interface CuentaDao {
 
     List<Cuenta> listaTodasLasCuentas() throws DAOException;
 
+    List<Cuenta> listaCuentasUser(Integer id) throws DAOException;
+
 }

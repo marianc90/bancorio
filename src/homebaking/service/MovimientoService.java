@@ -21,6 +21,9 @@ public class MovimientoService {
             if (tipo.equals("TRANSFERENCIA") || tipo.equals("DEBITO")) {
                 CuentaService cs = new CuentaService();
                 if (cuentaOrigen != null) {
+                    if (cuentaOrigen.getSaldo() < monto) {
+                        throw new ServiceException("No hay suficiente saldo en la cuenta origen");
+                    }
                     cuentaOrigen.setSaldo(-monto);
                     cs.actualizaSaldo(cuentaOrigen);
                     if (cuentaDestino != null) {
@@ -46,11 +49,25 @@ public class MovimientoService {
                 }
 
             } else if (tipo.equals("PAGO")) {
+                if (tarjeta != null && cuentaOrigen != null) {
+                    CuentaService cs = new CuentaService();
+                    if (cuentaOrigen.getSaldo() >= monto) {
+                        TarjetaService ts = new TarjetaService();
+                        tarjeta.setSaldo(-monto);
+                        ts.actualizaSaldo(tarjeta);
+                        cuentaOrigen.setSaldo(-monto);
+                        cs.actualizaSaldo(cuentaOrigen);
+                    } else {
+                        throw new ServiceException("No hay suficiente saldo en la cuenta para realizar el pago");
+                    }
+                }
+            } else if (tipo.equals("AJUSTE")) {
                 if (tarjeta != null) {
                     TarjetaService ts = new TarjetaService();
                     tarjeta.setSaldo(-monto);
                     ts.actualizaSaldo(tarjeta);
                 }
+
             }
 
             Movimiento aInsertar = new Movimiento(descripcion, monto, tipo, cuentaOrigen, cuentaDestino, tarjeta);
@@ -63,6 +80,24 @@ public class MovimientoService {
     public List<Movimiento> listaTodosLosMovimientos() throws ServiceException {
         try {
             return dao.listaTodosLosMovimientos();
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
+    }
+
+    public List<Movimiento> listaMovimCuenta(Cuenta c) throws ServiceException {
+        try {
+
+            return dao.listaMovimCuenta(c.getNumero());
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
+    }
+
+    public List<Movimiento> listaMovimTarjeta(Tarjeta t) throws ServiceException {
+        try {
+
+            return dao.listaMovimTarjeta(t.getNumero());
         } catch (DAOException e) {
             throw new ServiceException();
         }

@@ -1,6 +1,7 @@
 package homebaking.ui.Usuario;
 
 
+import homebaking.exceptions.ServiceException;
 import homebaking.ui.CamposPanel;
 import homebaking.ui.PanelManager;
 
@@ -14,7 +15,7 @@ public class CamposUsuarioPanel extends CamposPanel {
     private JTextField passwordTxt;
     private boolean esEdicion = false;
 
-    public CamposUsuarioPanel(PanelManager panelManager) {
+    public CamposUsuarioPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 

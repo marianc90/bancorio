@@ -186,6 +186,45 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
         return resultado;
     }
 
+    public List<Tarjeta> listaTarjetasUser(Integer id) throws DAOException {
+        List<Tarjeta> resultado = new ArrayList<>();
+        String sql = "SELECT * FROM tarjetas WHERE titular = '" + id + "'";
+        Connection c = DBManager.connect();
+        try {
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+
+
+            while (rs.next()) {
+                Long numero = rs.getLong("numero");
+                String tipo = rs.getString("tipo");
+                double disponible = rs.getDouble("disponible");
+                double saldo = rs.getDouble("saldo");
+                Integer titular = rs.getInt("titular");
+                Tarjeta u = new Tarjeta(tipo, titular, numero, disponible, saldo);
+                resultado.add(u);
+
+            }
+        } catch (SQLException e) {
+            try {
+                c.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new DAOException();
+            }
+        }
+        return resultado;
+    }
+
     public Tarjeta checkTarjeta(Long numero, String tipo) throws DAOException {
         String sql = "SELECT * FROM tarjetas WHERE numero = ? AND tipo = ?";
         return executeCheckTarjetaQuery(sql, numero, tipo);

@@ -1,16 +1,22 @@
 package homebaking.ui;
 
+import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
 import homebaking.model.Movimiento;
 import homebaking.model.Tarjeta;
 import homebaking.model.User;
 import homebaking.ui.Cuenta.PantallaAltaCuentaPanel;
 import homebaking.ui.Cuenta.TablaCuentasPanel;
+import homebaking.ui.CuentaUser.TablaCuentasUserPanel;
 import homebaking.ui.Login.PantallaLoginPanel;
 import homebaking.ui.Movimiento.PantallaAltaMovimientoPanel;
 import homebaking.ui.Movimiento.TablaMovimientosPanel;
+import homebaking.ui.MovimientoUser.PantallaAltaMovimUserPanel;
+import homebaking.ui.MovimientoUser.TablaMovimCuentaPanel;
+import homebaking.ui.MovimientoUser.TablaMovimTarjPanel;
 import homebaking.ui.Tarjeta.PantallaAltaTarjetaPanel;
 import homebaking.ui.Tarjeta.TablaTarjetasPanel;
+import homebaking.ui.TarjetaUser.TablaTarjetasUserPanel;
 import homebaking.ui.Usuario.PantallaAltaUsuarioPanel;
 import homebaking.ui.Usuario.TablaUsuariosPanel;
 
@@ -31,13 +37,18 @@ public class PanelManager {
     private TablaCuentasPanel tablaCuentasPanel;
     private TablaTarjetasPanel tablaTarjetasPanel;
     private TablaMovimientosPanel tablaMovimientosPanel;
+    private TablaCuentasUserPanel tablaCuentasUserPanel;
+    private TablaMovimCuentaPanel tablaMovimCuentaPanel;
+    private TablaTarjetasUserPanel tablaTarjetasUserPanel;
+    private TablaMovimTarjPanel tablaMovimTarjPanel;
+    private PantallaAltaMovimUserPanel pantallaAltaMovimUserPanel;
     private User userLogueado;
 
     public PanelManager() {
         // TODO Auto-generated constructor stub
     }
 
-    public void armarManager() {
+    public void armarManager() throws ServiceException {
         frame = new JFrame("Home Banking");
         frame.setBounds(100, 100, 500, 550);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,6 +69,11 @@ public class PanelManager {
         pantallaAltaTarjetaPanel = new PantallaAltaTarjetaPanel(this);
         tablaMovimientosPanel = new TablaMovimientosPanel(this);
         pantallaAltaMovimientoPanel = new PantallaAltaMovimientoPanel(this);
+        tablaCuentasUserPanel = new TablaCuentasUserPanel(this);
+        tablaMovimCuentaPanel = new TablaMovimCuentaPanel(this);
+        tablaTarjetasUserPanel = new TablaTarjetasUserPanel(this);
+        tablaMovimTarjPanel = new TablaMovimTarjPanel(this);
+        pantallaAltaMovimUserPanel = new PantallaAltaMovimUserPanel(this);
 
     }
 
@@ -198,6 +214,24 @@ public class PanelManager {
 
     }
 
+    public void mostrarPantallaMovimCuentaPanel(Cuenta c) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaMovimientosPanel);
+        tablaMovimientosPanel.refrescarTabla(c);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaMovimTarjetaPanel(Tarjeta t) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaMovimientosPanel);
+        tablaMovimientosPanel.refrescarTabla(t);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
     public void mostrarPantallaAltaMovimientoPanel() {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaMovimientoPanel);
@@ -215,6 +249,61 @@ public class PanelManager {
         frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
 
     }
+
+    public void mostrarPantallaUserCuentaPanel() {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaCuentasUserPanel);
+        tablaCuentasUserPanel.refrescarTabla();
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaUserMovimCuentaPanel(Cuenta c) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaMovimCuentaPanel);
+        tablaMovimCuentaPanel.refrescarTabla(c);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaUserTarjetaPanel() {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaTarjetasUserPanel);
+        tablaTarjetasUserPanel.refrescarTabla();
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaUserMovimTarjetaPanel(Tarjeta t) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaMovimTarjPanel);
+        tablaMovimTarjPanel.refrescarTabla(t);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaNuevoMovimUserPanel() {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(pantallaAltaMovimUserPanel);
+        pantallaAltaMovimUserPanel.vaciarDatos();
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaNuevoMovimUserPanel(Tarjeta t) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(pantallaAltaMovimUserPanel);
+        pantallaAltaMovimUserPanel.vaciarDatos(t);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
 
     public boolean isSesionIniciada() {
         return userLogueado != null;

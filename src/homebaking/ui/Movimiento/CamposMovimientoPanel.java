@@ -1,5 +1,6 @@
 package homebaking.ui.Movimiento;
 
+import homebaking.exceptions.ServiceException;
 import homebaking.ui.CamposPanel;
 import homebaking.ui.PanelManager;
 
@@ -14,13 +15,14 @@ public class CamposMovimientoPanel extends CamposPanel {
     private JTextField fechaTxt;
     private JTextField descripcionTxt;
     private JTextField montoTxt;
+    private DefaultComboBoxModel<String> tiposModel;
     private JComboBox<String> tipoComboBox;
     private JTextField cuentaOrigenTxt;
     private JTextField cuentaDestinoTxt;
     private JTextField tarjetaTxt;
     private String modoEdicion = "no"; //no, saldo, disponible
 
-    public CamposMovimientoPanel(PanelManager panelManager) {
+    public CamposMovimientoPanel(PanelManager panelManager) throws ServiceException {
         super(panelManager);
     }
 
@@ -41,8 +43,8 @@ public class CamposMovimientoPanel extends CamposPanel {
         fechaTxt = new JTextField("");
         descripcionTxt = new JTextField("");
         montoTxt = new JTextField("");
-        String[] tipos = {"Transferencia", "Débito", "Crédito", "Consumo", "Pago"};
-        tipoComboBox = new JComboBox<>(tipos);
+        tiposModel = new DefaultComboBoxModel<>(new String[]{"Transferencia", "Débito", "Crédito", "Consumo TC", "Ajuste TC", "Pago"});
+        tipoComboBox = new JComboBox<>(tiposModel);
         cuentaOrigenTxt = new JTextField("");
         cuentaDestinoTxt = new JTextField("");
         tarjetaTxt = new JTextField("");
@@ -83,8 +85,10 @@ public class CamposMovimientoPanel extends CamposPanel {
             return "DEBITO";
         } else if (tipoSeleccionado.equals("Crédito")) {
             return "CREDITO";
-        } else if (tipoSeleccionado.equals("Consumo")) {
+        } else if (tipoSeleccionado.equals("Consumo TC")) {
             return "CONSUMO";
+        } else if (tipoSeleccionado.equals("Ajuste TC")) {
+            return "AJUSTE";
         } else if (tipoSeleccionado.equals("Pago")) {
             return "PAGO";
         }
@@ -101,8 +105,12 @@ public class CamposMovimientoPanel extends CamposPanel {
             cuentaOrigenTxt.setEnabled(true);
             cuentaDestinoTxt.setEnabled(false);
             tarjetaTxt.setEnabled(false);
-        } else if (tipo.equals("Consumo") || tipo.equals("Pago")) {
+        } else if (tipo.equals("Consumo TC") || tipo.equals("Ajuste TC")) {
             cuentaOrigenTxt.setEnabled(false);
+            cuentaDestinoTxt.setEnabled(false);
+            tarjetaTxt.setEnabled(true);
+        } else if (tipo.equals("Pago")) {
+            cuentaOrigenTxt.setEnabled(true);
             cuentaDestinoTxt.setEnabled(false);
             tarjetaTxt.setEnabled(true);
         }
@@ -170,6 +178,14 @@ public class CamposMovimientoPanel extends CamposPanel {
 
     public void setTarjetaTxt(JTextField tarjetaTxt) {
         this.tarjetaTxt = tarjetaTxt;
+    }
+
+    public DefaultComboBoxModel<String> getTiposModel() {
+        return tiposModel;
+    }
+
+    public void setTiposModel(DefaultComboBoxModel<String> tiposModel) {
+        this.tiposModel = tiposModel;
     }
 
     public void setModoEdicion(String edicion) {

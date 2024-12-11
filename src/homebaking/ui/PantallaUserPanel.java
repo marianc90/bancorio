@@ -30,7 +30,7 @@ public class PantallaUserPanel extends JPanel {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel imageLabel = new JLabel(scaledIcon);
 
-        this.transferBtn = new JButton("Mis Transferencias");
+        this.transferBtn = new JButton("Nueva Transferencia");
         this.verTarjetasBtn = new JButton("Mis Tarjetas");
         this.verCuentasBtn = new JButton("Mis Cuentas");
         this.emitResumenBtn = new JButton("Emitir Resumen");
@@ -49,24 +49,15 @@ public class PantallaUserPanel extends JPanel {
         this.transferBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                panelManager.mostrarPantallaNuevoMovimUserPanel();
             }
         });
 
         this.verTarjetasBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Esta opción estará disponible próximamente.",
-                        "Funcionalidad en desarrollo",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                panelManager.mostrarPantallaUserTarjetaPanel();
+
             }
         });
 
@@ -96,13 +87,7 @@ public class PantallaUserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //panelManager.mostrarPantallaAltaCuentaPanel();
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Esta opción estará disponible próximamente.",
-                    "Funcionalidad en desarrollo",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                panelManager.mostrarPantallaUserCuentaPanel();
             }
         });
 

@@ -1,6 +1,7 @@
 package homebaking.ui.Movimiento;
 
 import homebaking.exceptions.ServiceException;
+import homebaking.model.Cuenta;
 import homebaking.model.Movimiento;
 import homebaking.model.Tarjeta;
 import homebaking.service.MovimientoService;
@@ -112,11 +113,40 @@ public class TablaMovimientosPanel extends JPanel implements ActionListener {
 
         }
     }
+
     public void refrescarTabla() {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         try {
             List<Movimiento> listaTodosLosMovimientos = s.listaTodosLosMovimientos();
             modelo.setContenido(listaTodosLosMovimientos);
+            modelo.fireTableDataChanged();
+            tablaMovimientos.getColumnModel().getColumn(0).setPreferredWidth(100);
+            leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            tablaMovimientos.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+        } catch (ServiceException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de movimientos.");
+        }
+    }
+
+    public void refrescarTabla(Cuenta c) {
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        try {
+            List<Movimiento> listaMovimCuenta = s.listaMovimCuenta(c);
+            modelo.setContenido(listaMovimCuenta);
+            modelo.fireTableDataChanged();
+            tablaMovimientos.getColumnModel().getColumn(0).setPreferredWidth(100);
+            leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            tablaMovimientos.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+        } catch (ServiceException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de movimientos.");
+        }
+    }
+
+    public void refrescarTabla(Tarjeta t) {
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        try {
+            List<Movimiento> listaMovimTarjeta = s.listaMovimTarjeta(t);
+            modelo.setContenido(listaMovimTarjeta);
             modelo.fireTableDataChanged();
             tablaMovimientos.getColumnModel().getColumn(0).setPreferredWidth(100);
             leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
