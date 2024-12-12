@@ -4,6 +4,7 @@ import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
 import homebaking.model.Movimiento;
 import homebaking.model.Tarjeta;
+import homebaking.model.User;
 import homebaking.service.MovimientoService;
 import homebaking.service.TarjetaService;
 import homebaking.ui.PanelManager;
@@ -109,7 +110,7 @@ public class TablaMovimientosPanel extends JPanel implements ActionListener {
             }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
+            panelManager.mostrarPantallaAnterior();
 
         }
     }

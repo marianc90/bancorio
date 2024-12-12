@@ -75,7 +75,7 @@ public class CuentaTableModel extends AbstractTableModel {
                 result = c.getSaldo();
                 break;
             case COLUMNA_TITULAR:
-                result = c.getTitular().getUsername();
+                result = (c.getTitular() != null) ? c.getTitular().getUsername() : "";
                 break;
             default:
                 result = new String("");

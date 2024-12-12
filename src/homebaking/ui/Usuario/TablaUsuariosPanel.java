@@ -25,6 +25,8 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
     private JButton botonAgregar;
     private JButton botonBorrar;
     private JButton botonEditar;
+    private JButton botonVerCuentas;
+    private JButton botonVerTarjetas;
     private PanelManager panelManager;
     UserService s = new UserService();
 
@@ -72,6 +74,14 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
         botonBorrar.addActionListener(this);
         this.add(botonBorrar);
 
+        botonVerCuentas = new JButton("Ver Cuentas");
+        botonVerCuentas.addActionListener(this);
+        this.add(botonVerCuentas);
+
+        botonVerTarjetas = new JButton("Ver Tarjetas");
+        botonVerTarjetas.addActionListener(this);
+        this.add(botonVerTarjetas);
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -105,7 +115,25 @@ public class TablaUsuariosPanel extends JPanel implements ActionListener {
             }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
+            panelManager.mostrarPantallaAnterior();
+
+        } else if (e.getSource() == botonVerCuentas){
+            int filaSeleccionada = this.tablaUsuarios.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                User usuario = this.modelo.getContenido().get(filaSeleccionada);
+                panelManager.mostrarPantallaAdminCuentaPanel(usuario);
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un usuario para ver sus cuentas.");
+            }
+
+        } else if (e.getSource() == botonVerTarjetas){
+            int filaSeleccionada = this.tablaUsuarios.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                User usuario = this.modelo.getContenido().get(filaSeleccionada);
+                panelManager.mostrarPantallaAdminTarjetaPanel(usuario);
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor selecciona un usuario para ver sus tarjetas.");
+            }
 
         }
     }

@@ -4,6 +4,7 @@ import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
 import homebaking.service.CuentaService;
 import homebaking.service.MovimientoService;
+import homebaking.service.UserService;
 import homebaking.ui.AbstractPantallaAltaPanel;
 import homebaking.ui.PanelManager;
 
@@ -63,7 +64,7 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
                     tipomov = "CREDITO";
                 }
                 ms.crearMovimiento("Ajuste de saldo", saldo, tipomov,c,null,null);
-                panelManager.mostrarPantallaAdminCuentaPanel();
+                panelManager.mostrarPantallaAdminCuentaPanel(c.getTitular());
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, "LA CUENTA "+numero+" NO EXISTE");
             }
@@ -71,8 +72,9 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
         else {
             try {
                 CuentaService s = new CuentaService();
+                UserService us = new UserService();
                 s.crearCuenta(tipo, titular);
-                panelManager.mostrarPantallaAdminCuentaPanel();
+                panelManager.mostrarPantallaAdminCuentaPanel(us.getUser(titular));
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, "LA CUENTA YA EXISTE");
             }
@@ -82,7 +84,7 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        panelManager.mostrarPantallaAdminCuentaPanel();
+        panelManager.mostrarPantallaAnterior();
     }
 
     public void llenarDatos(Cuenta c) {

@@ -134,7 +134,7 @@ public class PantallaAltaMovimientoPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        panelManager.mostrarPantallaAdminMovimientoPanel();
+        panelManager.mostrarPantallaAnterior();
     }
 
     public void llenarDatos(Movimiento m) {

@@ -87,7 +87,7 @@ public class PantallaUserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                panelManager.mostrarPantallaUserCuentaPanel();
+                panelManager.mostrarPantallaUserCuentaPanel(panelManager.getUserLogueado());
             }
         });
 

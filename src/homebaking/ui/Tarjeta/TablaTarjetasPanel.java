@@ -1,7 +1,9 @@
 package homebaking.ui.Tarjeta;
 
 import homebaking.exceptions.ServiceException;
+import homebaking.model.Cuenta;
 import homebaking.model.Tarjeta;
+import homebaking.model.User;
 import homebaking.service.TarjetaService;
 import homebaking.ui.PanelManager;
 
@@ -127,7 +129,7 @@ public class TablaTarjetasPanel extends JPanel implements ActionListener {
             }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
+            panelManager.mostrarPantallaAnterior();
 
         } else if (e.getSource() == botonMovimientos) {
             int filaSeleccionada = this.tablaTarjetas.getSelectedRow();
@@ -144,6 +146,20 @@ public class TablaTarjetasPanel extends JPanel implements ActionListener {
         try {
             List<Tarjeta> listaTodasLasTarjetas = s.listaTodasLasTarjetas();
             modelo.setContenido(listaTodasLasTarjetas);
+            modelo.fireTableDataChanged();
+            tablaTarjetas.getColumnModel().getColumn(0).setPreferredWidth(100);
+            leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            tablaTarjetas.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+        } catch (ServiceException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de tarjetas.");
+        }
+    }
+
+    public void refrescarTabla(User u) {
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        try {
+            List<Tarjeta> listaTarjetasUser = s.listaTarjetasUser(u);
+            modelo.setContenido(listaTarjetasUser);
             modelo.fireTableDataChanged();
             tablaTarjetas.getColumnModel().getColumn(0).setPreferredWidth(100);
             leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);

@@ -6,6 +6,7 @@ import homebaking.model.Tarjeta;
 import homebaking.service.CuentaService;
 import homebaking.service.MovimientoService;
 import homebaking.service.TarjetaService;
+import homebaking.service.UserService;
 import homebaking.ui.AbstractPantallaAltaPanel;
 import homebaking.ui.PanelManager;
 
@@ -64,7 +65,7 @@ public class PantallaAltaTarjetaPanel extends AbstractPantallaAltaPanel {
                 //s.actualizaSaldo(t);
                 MovimientoService ms = new MovimientoService();
                 ms.crearMovimiento("Ajuste de saldo", saldo, "AJUSTE",null,null,t);
-                panelManager.mostrarPantallaAdminTarjetaPanel();
+                panelManager.mostrarPantallaAdminTarjetaPanel(t.getTitular());
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, "LA TARJETA "+numero+" NO EXISTE");
             }
@@ -75,7 +76,7 @@ public class PantallaAltaTarjetaPanel extends AbstractPantallaAltaPanel {
                 Tarjeta t = s.checkTarjeta(numero, tipo);
                 t.setDisponible(disponible);
                 s.actualizaDisponible(t);
-                panelManager.mostrarPantallaAdminTarjetaPanel();
+                panelManager.mostrarPantallaAdminTarjetaPanel(t.getTitular());
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, "LA TARJETA "+numero+" NO EXISTE");
             }
@@ -84,7 +85,8 @@ public class PantallaAltaTarjetaPanel extends AbstractPantallaAltaPanel {
             try {
                 TarjetaService s = new TarjetaService();
                 s.crearTarjeta(titular, tipo, disponible);
-                panelManager.mostrarPantallaAdminTarjetaPanel();
+                UserService us = new UserService();
+                panelManager.mostrarPantallaAdminTarjetaPanel(us.getUser(titular));
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
@@ -94,7 +96,7 @@ public class PantallaAltaTarjetaPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        panelManager.mostrarPantallaAdminTarjetaPanel();
+        panelManager.mostrarPantallaAnterior();
     }
 
     public void llenarDatos(Tarjeta t, String modo) {

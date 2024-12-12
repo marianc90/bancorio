@@ -3,6 +3,7 @@ package homebaking.ui.Cuenta;
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
 import homebaking.model.Tarjeta;
+import homebaking.model.User;
 import homebaking.service.CuentaService;
 import homebaking.ui.PanelManager;
 
@@ -121,7 +122,7 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
             }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarAdminPanel();
+            panelManager.mostrarPantallaAnterior();
 
         }
     }
@@ -130,6 +131,22 @@ public class TablaCuentasPanel extends JPanel implements ActionListener {
         try {
             List<Cuenta> listaTodasLasCuentas = s.listaTodasLasCuentas();
             modelo.setContenido(listaTodasLasCuentas);
+            modelo.fireTableDataChanged();
+            tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tablaCuentas.getColumnModel().getColumn(1).setPreferredWidth(15);
+            leftRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            tablaCuentas.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+            tablaCuentas.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
+        } catch (ServiceException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener lista de cuentas.");
+        }
+    }
+
+    public void refrescarTabla(User u) {
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        try {
+            List<Cuenta> listaCuentasUser = s.listaCuentasUser(u);
+            modelo.setContenido(listaCuentasUser);
             modelo.fireTableDataChanged();
             tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(100);
             tablaCuentas.getColumnModel().getColumn(1).setPreferredWidth(15);

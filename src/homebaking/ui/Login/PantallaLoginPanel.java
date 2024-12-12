@@ -55,7 +55,7 @@ public class PantallaLoginPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        panelManager.mostrarInicioPanel();
+        panelManager.mostrarPantallaAnterior();
         vaciarDatos();
     }
 

@@ -93,7 +93,7 @@ public class TablaTarjetasUserPanel extends JPanel implements ActionListener {
             }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarUserPanel();
+            panelManager.mostrarPantallaAnterior();
 
         }
     }

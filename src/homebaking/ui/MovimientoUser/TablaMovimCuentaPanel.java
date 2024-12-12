@@ -62,7 +62,7 @@ public class TablaMovimCuentaPanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonVolver){
-            panelManager.mostrarPantallaUserCuentaPanel();
+            panelManager.mostrarPantallaAnterior();
 
         }
     }

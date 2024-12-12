@@ -2,6 +2,7 @@ package homebaking.ui.CuentaUser;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
+import homebaking.model.User;
 import homebaking.service.CuentaService;
 import homebaking.ui.PanelManager;
 
@@ -75,14 +76,13 @@ public class TablaCuentasUserPanel extends JPanel implements ActionListener {
            }
 
         } else if (e.getSource() == botonVolver){
-            panelManager.mostrarUserPanel();
-
+           panelManager.mostrarPantallaAnterior();
         }
     }
-    public void refrescarTabla() {
+    public void refrescarTabla(User u) {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         try {
-            List<Cuenta> listaCuentasUser = s.listaCuentasUser(panelManager.getUserLogueado());
+            List<Cuenta> listaCuentasUser = s.listaCuentasUser(u);
             modelo.setContenido(listaCuentasUser);
             modelo.fireTableDataChanged();
             tablaCuentas.getColumnModel().getColumn(0).setPreferredWidth(100);

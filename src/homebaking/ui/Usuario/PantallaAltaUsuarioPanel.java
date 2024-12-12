@@ -63,7 +63,7 @@ public class PantallaAltaUsuarioPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        panelManager.mostrarPantallaAdminUsuarioPanel();
+        panelManager.mostrarPantallaAnterior();
     }
 
     public void llenarDatos(User u) {

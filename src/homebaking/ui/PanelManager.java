@@ -21,6 +21,7 @@ import homebaking.ui.Usuario.PantallaAltaUsuarioPanel;
 import homebaking.ui.Usuario.TablaUsuariosPanel;
 
 import javax.swing.*;
+import java.util.Stack;
 
 public class PanelManager {
 
@@ -43,6 +44,7 @@ public class PanelManager {
     private TablaMovimTarjPanel tablaMovimTarjPanel;
     private PantallaAltaMovimUserPanel pantallaAltaMovimUserPanel;
     private User userLogueado;
+    private Stack<JPanel> pantallaAnterior = new Stack<>();
 
     public PanelManager() {
         // TODO Auto-generated constructor stub
@@ -82,6 +84,9 @@ public class PanelManager {
     }
 
     public void mostrarInicioPanel() {
+        if (frame.getContentPane().getComponentCount() > 0) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaInicioPanel);
         frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
@@ -90,6 +95,9 @@ public class PanelManager {
     }
 
     public void mostrarLoginPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaLoginPanel);
         frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
@@ -98,6 +106,9 @@ public class PanelManager {
     }
 
     public void mostrarUserPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaUserPanel);
         frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
@@ -106,6 +117,9 @@ public class PanelManager {
     }
 
     public void mostrarAdminPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAdminPanel);
         frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
@@ -114,6 +128,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAltaUsuarioPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaUsuarioPanel);
         pantallaAltaUsuarioPanel.vaciarDatos();
@@ -124,6 +141,9 @@ public class PanelManager {
 
 
     public void mostrarPantallaAdminUsuarioPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaUsuariosPanel);
         tablaUsuariosPanel.refrescarTabla();
@@ -133,6 +153,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaEDicionUsuarioPanel(User usuarioAEditar) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaUsuarioPanel);
         pantallaAltaUsuarioPanel.llenarDatos(usuarioAEditar);
@@ -141,17 +164,10 @@ public class PanelManager {
 
     }
 
-    public void mostrarPantallaAltaUsuarioPanel(User u) {
-        frame.getContentPane().removeAll();
-        if(u != null) {
-            frame.getContentPane().add(pantallaAltaUsuarioPanel);
-        }
-        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
-        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
-
-    }
-
     public void mostrarPantallaAdminCuentaPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaCuentasPanel);
         tablaCuentasPanel.refrescarTabla();
@@ -161,6 +177,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAltaCuentaPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaCuentaPanel);
         pantallaAltaCuentaPanel.vaciarDatos();
@@ -170,6 +189,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaEdicionCuentaPanel(Cuenta cuentaAEditar) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaCuentaPanel);
         pantallaAltaCuentaPanel.llenarDatos(cuentaAEditar);
@@ -179,6 +201,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAdminTarjetaPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaTarjetasPanel);
         tablaTarjetasPanel.refrescarTabla();
@@ -188,6 +213,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAltaTarjetaPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaTarjetaPanel);
         pantallaAltaTarjetaPanel.vaciarDatos();
@@ -197,6 +225,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaEdicionTarjetaPanel(Tarjeta tarjetaAEditar, String modo) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaTarjetaPanel);
         pantallaAltaTarjetaPanel.llenarDatos(tarjetaAEditar, modo);
@@ -206,6 +237,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAdminMovimientoPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaMovimientosPanel);
         tablaMovimientosPanel.refrescarTabla();
@@ -215,6 +249,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaMovimCuentaPanel(Cuenta c) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaMovimientosPanel);
         tablaMovimientosPanel.refrescarTabla(c);
@@ -224,6 +261,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaMovimTarjetaPanel(Tarjeta t) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaMovimientosPanel);
         tablaMovimientosPanel.refrescarTabla(t);
@@ -233,6 +273,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaAltaMovimientoPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaMovimientoPanel);
         pantallaAltaMovimientoPanel.vaciarDatos();
@@ -242,6 +285,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaEdicionMovimientoPanel(Movimiento movimientoAEditar) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaMovimientoPanel);
         pantallaAltaMovimientoPanel.llenarDatos(movimientoAEditar);
@@ -250,16 +296,46 @@ public class PanelManager {
 
     }
 
-    public void mostrarPantallaUserCuentaPanel() {
+    public void mostrarPantallaAdminCuentaPanel(User u) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaCuentasPanel);
+        tablaCuentasPanel.refrescarTabla(u);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaAdminTarjetaPanel(User u) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(tablaTarjetasPanel);
+        tablaTarjetasPanel.refrescarTabla(u);
+        frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
+        frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
+
+    }
+
+    public void mostrarPantallaUserCuentaPanel(User u) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaCuentasUserPanel);
-        tablaCuentasUserPanel.refrescarTabla();
+        tablaCuentasUserPanel.refrescarTabla(u);
         frame.getContentPane().validate();//RE-dispongo los elementos segun el layout
         frame.getContentPane().repaint();//RE-pinto los elementos dispuestos en el paso anterior
 
     }
 
     public void mostrarPantallaUserMovimCuentaPanel(Cuenta c) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaMovimCuentaPanel);
         tablaMovimCuentaPanel.refrescarTabla(c);
@@ -269,6 +345,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaUserTarjetaPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaTarjetasUserPanel);
         tablaTarjetasUserPanel.refrescarTabla();
@@ -278,6 +357,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaUserMovimTarjetaPanel(Tarjeta t) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(tablaMovimTarjPanel);
         tablaMovimTarjPanel.refrescarTabla(t);
@@ -287,6 +369,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaNuevoMovimUserPanel() {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaMovimUserPanel);
         pantallaAltaMovimUserPanel.vaciarDatos();
@@ -296,6 +381,9 @@ public class PanelManager {
     }
 
     public void mostrarPantallaNuevoMovimUserPanel(Tarjeta t) {
+        if (frame.getContentPane().getComponentCount() > 0 && !esPantallaAlta((JPanel) frame.getContentPane().getComponent(0))) {
+            pantallaAnterior.push((JPanel) frame.getContentPane().getComponent(0));
+        }
         frame.getContentPane().removeAll();
         frame.getContentPane().add(pantallaAltaMovimUserPanel);
         pantallaAltaMovimUserPanel.vaciarDatos(t);
@@ -319,6 +407,27 @@ public class PanelManager {
 
     public boolean isUserAdmin() {
         return userLogueado.isAdmin();
+    }
+
+    public void mostrarPantallaAnterior() {
+        while (!pantallaAnterior.isEmpty()) {
+            JPanel panel = pantallaAnterior.pop();
+            if (!esPantallaAlta(panel) && frame.getContentPane().getComponent(0) != panel) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(panel);
+                frame.getContentPane().validate();
+                frame.getContentPane().repaint();
+                return;
+            }
+        }
+    }
+
+    private boolean esPantallaAlta(JPanel panel) {
+        return panel instanceof PantallaAltaUsuarioPanel ||
+                panel instanceof PantallaAltaCuentaPanel ||
+                panel instanceof PantallaAltaTarjetaPanel ||
+                panel instanceof PantallaAltaMovimientoPanel ||
+                panel instanceof PantallaAltaMovimUserPanel;
     }
 }
 

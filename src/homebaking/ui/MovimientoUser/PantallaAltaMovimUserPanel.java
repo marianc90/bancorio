@@ -96,7 +96,7 @@ public class PantallaAltaMovimUserPanel extends AbstractPantallaAltaPanel {
                     t = tarjetaService.checkTarjeta(tarjeta);
                 }
                 s.crearMovimiento(descripcionStr, monto, tipo, co, null, t);
-                panelManager.mostrarPantallaUserMovimTarjetaPanel(t);
+                panelManager.mostrarPantallaUserTarjetaPanel();
             } catch (ServiceException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
@@ -124,11 +124,7 @@ public class PantallaAltaMovimUserPanel extends AbstractPantallaAltaPanel {
 
     @Override
     public void ejecutarAccionCancel() {
-        if (this.operacion.equals("TARJETA")) {
-            panelManager.mostrarPantallaUserTarjetaPanel();
-        } else if (this.operacion.equals("CUENTA")) {
-            panelManager.mostrarUserPanel();
-        }
+        panelManager.mostrarPantallaAnterior();
     }
 
     public void vaciarDatos(Tarjeta t) {
