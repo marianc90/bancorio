@@ -1,8 +1,8 @@
 package homebaking.h2Impl;
 
 import homebaking.dao.UserDao;
+import homebaking.exceptions.ConnectionException;
 import homebaking.exceptions.DAOException;
-import homebaking.exceptions.ObjectoDuplicadoException;
 import homebaking.model.User;
 import resources.DBManager;
 
@@ -19,8 +19,12 @@ public class UserDaoH2Impl implements UserDao {
         String password = unUser.getPassword();
 
         Date d = new Date();
-
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
 //            Statement s = c.createStatement();
             PreparedStatement ps = c.prepareStatement("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
@@ -55,7 +59,12 @@ public class UserDaoH2Impl implements UserDao {
 
     public void borraUser(String username) throws DAOException {
         String sql = "DELETE FROM usuarios WHERE username = '" + username + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -84,7 +93,12 @@ public class UserDaoH2Impl implements UserDao {
         String pass = unUser.getPassword();
 
         String sql = "UPDATE usuarios set email = '" + email + "', password = '" + pass + "' WHERE username = '" + user + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -111,7 +125,12 @@ public class UserDaoH2Impl implements UserDao {
     public List<User> listaTodosLosUsers() throws DAOException {
         List<User> resultado = new ArrayList<>();
         String sql = "SELECT * FROM usuarios";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -145,7 +164,12 @@ public class UserDaoH2Impl implements UserDao {
 
     public User checkUser(String email, String password) throws DAOException {
         String sql = "SELECT * FROM usuarios WHERE email = '" + email + "' AND password = '" + password + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -179,7 +203,12 @@ public class UserDaoH2Impl implements UserDao {
 
     public User getUser(Integer id) throws DAOException {
         String sql = "SELECT * FROM usuarios WHERE id = '" + id + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);

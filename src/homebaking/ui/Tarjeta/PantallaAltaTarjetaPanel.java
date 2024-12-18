@@ -56,7 +56,15 @@ public class PantallaAltaTarjetaPanel extends AbstractPantallaAltaPanel {
         }
 
         if (campos.isModoEdicion().equals("saldo")) {
+            if (campos.getSaldoTxt().getText().isEmpty() || campos.getNumeroTxt().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            }
             double saldo = Double.parseDouble(campos.getSaldoTxt().getText());
+            if (saldo <= 0) {
+                JOptionPane.showMessageDialog(this, "El monto a incrementar/disminuir no puede ser cero.");
+                return;
+            }
             Long numero = Long.parseLong(campos.getNumeroTxt().getText());
             try {
                 TarjetaService s = new TarjetaService();

@@ -8,8 +8,6 @@ import homebaking.h2Impl.MovimientoDaoH2Impl;
 import homebaking.model.Cuenta;
 import homebaking.model.Movimiento;
 import homebaking.model.Tarjeta;
-
-import java.util.Date;
 import java.util.List;
 
 public class MovimientoService {

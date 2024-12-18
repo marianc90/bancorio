@@ -19,7 +19,6 @@ import homebaking.ui.Tarjeta.TablaTarjetasPanel;
 import homebaking.ui.TarjetaUser.TablaTarjetasUserPanel;
 import homebaking.ui.Usuario.PantallaAltaUsuarioPanel;
 import homebaking.ui.Usuario.TablaUsuariosPanel;
-
 import javax.swing.*;
 import java.util.Stack;
 

@@ -1,15 +1,23 @@
 package resources;
 
 
+import homebaking.exceptions.ConnectionException;
+import homebaking.exceptions.DAOException;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TableManager {
 
-	public void createUserTable() {
+	public void createUserTable() throws DAOException {
 
-		Connection c = DBManager.connect();
+		Connection c = null;
+		try {
+			c = DBManager.connect();
+		} catch (ConnectionException e) {
+			throw new DAOException("Error de conexión a la base de datos", e);
+		}
 		
 		String sql = "CREATE TABLE usuarios ( id INTEGER IDENTITY, username VARCHAR(256) UNIQUE, email VARCHAR(256), password VARCHAR(10))";
 
@@ -34,9 +42,14 @@ public class TableManager {
 
 	}
 	
-	public void dropUserTable() {
+	public void dropUserTable() throws DAOException {
 
-		Connection c = DBManager.connect();
+		Connection c = null;
+		try {
+			c = DBManager.connect();
+		} catch (ConnectionException e) {
+			throw new DAOException("Error de conexión a la base de datos", e);
+		}
 		
 		String sql = "DROP TABLE usuarios";
 		

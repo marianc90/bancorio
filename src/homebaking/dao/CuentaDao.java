@@ -1,9 +1,7 @@
 package homebaking.dao;
 
 import homebaking.exceptions.DAOException;
-import homebaking.exceptions.ObjectoDuplicadoException;
 import homebaking.model.Cuenta;
-
 import java.util.List;
 
 public interface CuentaDao {

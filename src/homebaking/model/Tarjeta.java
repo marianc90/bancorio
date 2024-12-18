@@ -2,7 +2,6 @@ package homebaking.model;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.service.UserService;
-
 import java.util.List;
 import java.util.UUID;
 

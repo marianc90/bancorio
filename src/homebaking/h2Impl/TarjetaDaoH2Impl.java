@@ -1,6 +1,7 @@
 package homebaking.h2Impl;
 
 import homebaking.dao.TarjetaDao;
+import homebaking.exceptions.ConnectionException;
 import homebaking.exceptions.DAOException;
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Tarjeta;
@@ -27,7 +28,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
 
         Date d = new Date();
 
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
 //            Statement s = c.createStatement();
             PreparedStatement ps = c.prepareStatement("INSERT INTO tarjetas (numero, tipo, disponible, saldo, titular) VALUES (?, ?, ?, ?, ?)");
@@ -64,7 +70,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
 
     public void borrarTarjeta(Long numero, String tipo) throws DAOException {
         String sql = "DELETE FROM tarjetas WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -93,7 +104,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
         double saldo = unaTarjeta.getSaldo();
 
         String sql = "UPDATE tarjetas set saldo = '" + saldo + "' WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -123,7 +139,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
         double disponible = unaTarjeta.getDisponible();
 
         String sql = "UPDATE tarjetas set disponible = '" + disponible + "' WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -150,7 +171,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
     public List<Tarjeta> listaTodasLasTarjetas() throws DAOException {
         List<Tarjeta> resultado = new ArrayList<>();
         String sql = "SELECT * FROM tarjetas";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -189,7 +215,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
     public List<Tarjeta> listaTarjetasUser(Integer id) throws DAOException {
         List<Tarjeta> resultado = new ArrayList<>();
         String sql = "SELECT * FROM tarjetas WHERE titular = '" + id + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -236,7 +267,12 @@ public class TarjetaDaoH2Impl implements TarjetaDao {
     }
 
     private Tarjeta executeCheckTarjetaQuery(String sql, Long numero, String tipo) throws DAOException {
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setLong(1, numero);
             if (tipo != null) {

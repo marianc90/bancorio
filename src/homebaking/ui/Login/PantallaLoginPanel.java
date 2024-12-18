@@ -47,7 +47,7 @@ public class PantallaLoginPanel extends AbstractPantallaAltaPanel {
                 JOptionPane.showMessageDialog(this, "LOGIN ERROR");
             }
         } catch (ServiceException e) {
-            JOptionPane.showMessageDialog(this, "EL USUARIO NO EXISTE");
+            JOptionPane.showMessageDialog(this, e );
         }
 
 

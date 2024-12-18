@@ -48,6 +48,10 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
 
 
         if (campos.isModoEdicion()) {
+            if (campos.getSaldoTxt().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            }
             double saldo = Double.parseDouble(campos.getSaldoTxt().getText());
             Integer numero = Integer.parseInt(campos.getNumeroTxt().getText());
             try {
@@ -60,8 +64,11 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
                 if (saldo < 0) {
                     tipomov = "DEBITO";
                     saldo = saldo * -1;
-                } else {
+                } else if (saldo > 0) {
                     tipomov = "CREDITO";
+                } else {
+                    JOptionPane.showMessageDialog(this, "El importe es inválido");
+                    return;
                 }
                 ms.crearMovimiento("Ajuste de saldo", saldo, tipomov,c,null,null);
                 panelManager.mostrarPantallaAdminCuentaPanel(c.getTitular());
@@ -106,6 +113,7 @@ public class PantallaAltaCuentaPanel extends AbstractPantallaAltaPanel {
         camposCuentaPanel.getTipoComboBox().setEnabled(true);
         camposCuentaPanel.getTitularIDTxt().setText("");
         camposCuentaPanel.getTitularIDTxt().setEnabled(true);
+        camposCuentaPanel.getSaldoTxt().setText("0.0");
         camposCuentaPanel.getSaldoTxt().setEnabled(false);
         camposCuentaPanel.getNumeroTxt().setText("");
         camposCuentaPanel.getNumeroTxt().setEnabled(false);

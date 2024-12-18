@@ -17,7 +17,6 @@ public class Main {
     public void iniciarManager() throws ServiceException {
         manager = new PanelManager();
         manager.armarManager();
-
         manager.mostrarInicioPanel();
     }
 

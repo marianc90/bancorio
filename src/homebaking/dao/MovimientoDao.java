@@ -1,9 +1,7 @@
 package homebaking.dao;
 
 import homebaking.exceptions.DAOException;
-import homebaking.model.Cuenta;
 import homebaking.model.Movimiento;
-
 import java.util.List;
 
 public interface MovimientoDao {

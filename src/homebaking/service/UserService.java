@@ -2,7 +2,6 @@ package homebaking.service;
 
 import homebaking.dao.UserDao;
 import homebaking.exceptions.DAOException;
-import homebaking.exceptions.ObjectoDuplicadoException;
 import homebaking.exceptions.ServiceException;
 import homebaking.h2Impl.UserDaoH2Impl;
 import homebaking.model.User;

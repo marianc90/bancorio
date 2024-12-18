@@ -9,14 +9,4 @@ public class CuentaBotoneraPanel extends BotoneraPanel {
         super(p);
     }
 
-//    @Override
-//    public void ejecutarAccionAceptar() {
-//        UsuarioService service = new UsuarioService();
-//
-//        try {
-//            service.agregarUsuario(null);
-//        } catch () {
-//
-//        }
-//    }
 }

@@ -1,6 +1,7 @@
 package homebaking.h2Impl;
 
 import homebaking.dao.CuentaDao;
+import homebaking.exceptions.ConnectionException;
 import homebaking.exceptions.DAOException;
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
@@ -22,7 +23,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
 
         Date d = new Date();
 
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
 //            Statement s = c.createStatement();
             PreparedStatement ps = c.prepareStatement("INSERT INTO cuentas (numero, tipo, titular, saldo) VALUES (?, ?, ?, ?)");
@@ -58,7 +64,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
 
     public void borrarCuenta(Integer numero) throws DAOException {
         String sql = "DELETE FROM cuentas WHERE numero = '" + numero + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -86,7 +97,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
         double saldo = unaCuenta.getSaldo();
 
         String sql = "UPDATE cuentas set saldo = '" + saldo + "' WHERE numero = '" + numero + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -113,7 +129,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
     public List<Cuenta> listaTodasLasCuentas() throws DAOException {
         List<Cuenta> resultado = new ArrayList<>();
         String sql = "SELECT * FROM cuentas";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -150,7 +171,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
     public List<Cuenta> listaCuentasUser(Integer id) throws DAOException {
         List<Cuenta> resultado = new ArrayList<>();
         String sql = "SELECT * FROM cuentas where titular = '" + id + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -187,7 +213,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
 
     public Cuenta checkCuenta(Integer numero, String tipo) throws DAOException {
         String sql = "SELECT * FROM cuentas WHERE numero = '" + numero + "' AND tipo = '" + tipo + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -223,7 +254,12 @@ public class CuentaDaoH2Impl implements CuentaDao {
 
     public Cuenta checkCuenta(Integer numero) throws DAOException {
         String sql = "SELECT * FROM cuentas WHERE numero = '" + numero + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);

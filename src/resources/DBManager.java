@@ -1,5 +1,7 @@
 package resources;
 
+import homebaking.exceptions.ConnectionException;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +15,7 @@ public class DBManager {
 	private static final String DB_USERNAME = "sa";
 	private static final String DB_PASSWORD = "";
 
-	public static Connection connect() {
+	public static Connection connect() throws ConnectionException {
 		Connection c = null;
 		try {
 			Class.forName(DB_DRIVER);
@@ -29,8 +31,8 @@ public class DBManager {
 			c.setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.exit(0);
-		}
+			throw new ConnectionException("Error de conexión a la base de datos", e);
+        }
 
 		return c;
 	}

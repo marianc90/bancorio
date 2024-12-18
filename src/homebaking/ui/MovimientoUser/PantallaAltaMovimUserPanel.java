@@ -2,22 +2,15 @@ package homebaking.ui.MovimientoUser;
 
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
-import homebaking.model.Movimiento;
 import homebaking.model.Tarjeta;
 import homebaking.service.CuentaService;
 import homebaking.service.MovimientoService;
 import homebaking.service.TarjetaService;
 import homebaking.ui.AbstractPantallaAltaPanel;
-import homebaking.ui.Movimiento.CamposMovimientoPanel;
-import homebaking.ui.Movimiento.MovimientoBotoneraPanel;
 import homebaking.ui.PanelManager;
-
 import javax.swing.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PantallaAltaMovimUserPanel extends AbstractPantallaAltaPanel {
 
@@ -79,6 +72,11 @@ public class PantallaAltaMovimUserPanel extends AbstractPantallaAltaPanel {
             monto = Double.valueOf(montoStr);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El monto debe ser un número válido.");
+            return;
+        }
+
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(this, "El monto debe ser mayor a 0.");
             return;
         }
 

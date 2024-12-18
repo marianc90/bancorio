@@ -2,6 +2,7 @@ package homebaking.h2Impl;
 
 import homebaking.dao.CuentaDao;
 import homebaking.dao.MovimientoDao;
+import homebaking.exceptions.ConnectionException;
 import homebaking.exceptions.DAOException;
 import homebaking.exceptions.ServiceException;
 import homebaking.model.Cuenta;
@@ -22,7 +23,12 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
         String descripcion = unMovimiento.getDescripcion();
         double monto = unMovimiento.getMonto();
         String tipo = unMovimiento.getTipo();
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         String sql;
         try {
             if (tipo.equals("TRANSFERENCIA")) {
@@ -90,7 +96,12 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
 
     public void borrarMovimiento(Long id) throws DAOException {
         String sql = "DELETE FROM movimientos WHERE id = '" + id + "'";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             s.executeUpdate(sql);
@@ -119,7 +130,12 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
         String descripcion = unMovimiento.getDescripcion();
 
         String sql = "UPDATE movimientos SET fecha = ?, descripcion = ? WHERE id = ?";
-        Connection c = DBManager.connect();
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setDate(1, new java.sql.Date(fecha.getTime()));
@@ -147,8 +163,13 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
 
     public List<Movimiento> listaTodosLosMovimientos() throws DAOException {
         List<Movimiento> resultado = new ArrayList<>();
-        String sql = "SELECT * FROM movimientos";
-        Connection c = DBManager.connect();
+        String sql = "SELECT * FROM movimientos ORDER BY fecha DESC";
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -189,8 +210,13 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
 
     public List<Movimiento> listaMovimCuenta(Integer numero) throws DAOException {
         List<Movimiento> resultado = new ArrayList<>();
-        String sql = "SELECT * FROM movimientos WHERE CUENTAORIGEN = '" + numero + "' OR CUENTADESTINO = '" + numero + "'";
-        Connection c = DBManager.connect();
+        String sql = "SELECT * FROM movimientos WHERE CUENTAORIGEN = '" + numero + "' OR CUENTADESTINO = '" + numero + "' ORDER BY fecha DESC";
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -231,8 +257,13 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
 
     public List<Movimiento> listaMovimTarjeta(Long numero) throws DAOException {
         List<Movimiento> resultado = new ArrayList<>();
-        String sql = "SELECT * FROM movimientos WHERE TARJETA = '" + numero + "'";
-        Connection c = DBManager.connect();
+        String sql = "SELECT * FROM movimientos WHERE TARJETA = '" + numero + "' ORDER BY fecha DESC";
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -272,8 +303,13 @@ public class MovimientoDaoH2Impl implements MovimientoDao {
     }
 
     public Movimiento checkMovimiento(Long id) throws DAOException {
-        String sql = "SELECT * FROM movimientos WHERE id = '" + id + "'";
-        Connection c = DBManager.connect();
+        String sql = "SELECT * FROM movimientos WHERE id = '" + id + "' ORDER BY fecha DESC";
+        Connection c = null;
+        try {
+            c = DBManager.connect();
+        } catch (ConnectionException e) {
+            throw new DAOException("Error de conexión a la base de datos", e);
+        }
         try {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
